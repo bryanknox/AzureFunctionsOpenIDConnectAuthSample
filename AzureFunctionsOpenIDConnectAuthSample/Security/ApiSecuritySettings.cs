@@ -1,4 +1,4 @@
-﻿namespace HttpFunctionAppAuth0Play.Security
+﻿namespace SampleApp.Security
 {
     /// <summary>
     /// Encapsulates settings used in API authorization.

@@ -1,8 +1,8 @@
-﻿using HttpFunctionAppAuth0Play.Security;
+﻿using SampleApp.Security;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 
-[assembly: FunctionsStartup(typeof(HttpFunctionAppAuth0Play.Startup))]
-namespace HttpFunctionAppAuth0Play
+[assembly: FunctionsStartup(typeof(SampleApp.Startup))]
+namespace SampleApp
 {
     public class Startup : FunctionsStartup
     {

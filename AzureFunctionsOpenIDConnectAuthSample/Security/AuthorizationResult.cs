@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 
-namespace HttpFunctionAppAuth0Play.Security
+namespace SampleApp.Security
 {
     public class AuthorizationResult
     {

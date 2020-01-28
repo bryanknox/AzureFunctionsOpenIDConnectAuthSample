@@ -1,7 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SampleApp.Security.Abstractions;
 
-namespace HttpFunctionAppAuth0Play.Security
+namespace SampleApp.Security
 {
     public static class ServicesConfigurationExtensions
     {

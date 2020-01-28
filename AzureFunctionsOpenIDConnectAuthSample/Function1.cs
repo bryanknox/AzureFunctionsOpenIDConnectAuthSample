@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
-using HttpFunctionAppAuth0Play.Security;
+using SampleApp.Security;
+using SampleApp.Security.Abstractions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -8,7 +9,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace HttpFunctionAppAuth0Play
+namespace SampleApp
 {
     public class Function1
     {
