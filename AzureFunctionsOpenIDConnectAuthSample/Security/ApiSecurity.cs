@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,14 +15,18 @@ namespace AzureFunctionsOpenIDConnectAuthSample.Security
     public class ApiSecurity : IApiSecurity
     {
         private readonly IAuthorizationHeaderBearerTokenParser _authorizationHeaderBearerTokenParser;
+        
         private readonly IConfigurationManager<OpenIdConnectConfiguration> _configurationManager;
+
+        private readonly IJwtSecurityTokenHandlerWrapper _jwtSecurityTokenHandlerWrapper;
 
         private readonly string _issuerUrl = null;
         private readonly string _audience = null;
 
         public ApiSecurity(
             IOptions<ApiSecuritySettings> apiSecuritySettingsOptions,
-            IAuthorizationHeaderBearerTokenParser authorizationHeaderBearerTokenParser)
+            IAuthorizationHeaderBearerTokenParser authorizationHeaderBearerTokenParser,
+            IJwtSecurityTokenHandlerWrapper jwtSecurityTokenHandlerWrapper)
         {
             _issuerUrl = apiSecuritySettingsOptions.Value.AuthorizationIssuerUrl;
             _audience = apiSecuritySettingsOptions.Value.AuthorizationAudience;
@@ -62,14 +65,16 @@ namespace AzureFunctionsOpenIDConnectAuthSample.Security
             );
 
             _authorizationHeaderBearerTokenParser = authorizationHeaderBearerTokenParser;
+
+            _jwtSecurityTokenHandlerWrapper = jwtSecurityTokenHandlerWrapper;
         }
 
         public async Task<AuthorizationResult> Authorize(IHeaderDictionary httpRequestHeaders, ILogger log)
         {
-            string authorizationToken = _authorizationHeaderBearerTokenParser.ParseToken(httpRequestHeaders);
-            if (authorizationToken == null)
+            string authorizationBearerToken = _authorizationHeaderBearerTokenParser.ParseToken(httpRequestHeaders);
+            if (authorizationBearerToken == null)
             {
-                return new AuthorizationResult("Authorization header missing or is not a Bearer token.");
+                return new AuthorizationResult("Authorization header is missing or is not a Bearer token.");
             }
 
             ClaimsPrincipal claimsPrincipal = null;
@@ -113,10 +118,8 @@ namespace AzureFunctionsOpenIDConnectAuthSample.Security
                     // Throws if the the token cannot be validated.
                     // If the token is successfully validiate then the ClaimsPrincipal from the JWT is returned.
                     // The ClaimsPrincipal returned does not include claims found in the JWT header.
-
-                    var handler = new JwtSecurityTokenHandler();
-                    claimsPrincipal = handler.ValidateToken(
-                        authorizationToken,
+                    claimsPrincipal = _jwtSecurityTokenHandlerWrapper.ValidateToken(
+                        authorizationBearerToken,
                         tokenValidationParameters,
                         out securityToken);
                 }

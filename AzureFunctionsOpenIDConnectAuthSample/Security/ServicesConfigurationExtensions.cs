@@ -8,8 +8,11 @@ namespace AzureFunctionsOpenIDConnectAuthSample.Security
     {
         public static void AddApiSecurity(this IServiceCollection services)
         {
-            // This needs to be a singleton because the singledton IApiSecurity requires it.
+            // This also needs to be a singleton, because the singledton IApiSecurity requires it.
             services.AddSingleton<IAuthorizationHeaderBearerTokenParser, AuthorizationHeaderBearerTokenParser>();
+
+            // This also needs to be a singleton, because the singledton IApiSecurity requires it.
+            services.AddSingleton<IJwtSecurityTokenHandlerWrapper, JwtSecurityTokenHandlerWrapper>();
 
             // Setup injection of ApiSecuritySettings configured in the
             // Function's app settings (or local.settings.json)
