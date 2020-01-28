@@ -1,13 +1,16 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SampleApp.Security.Abstractions;
+using AzureFunctionsOpenIDConnectAuthSample.Security.Abstractions;
 
-namespace SampleApp.Security
+namespace AzureFunctionsOpenIDConnectAuthSample.Security
 {
     public static class ServicesConfigurationExtensions
     {
         public static void AddApiSecurity(this IServiceCollection services)
         {
+            // This needs to be a singleton because the singledton IApiSecurity requires it.
+            services.AddSingleton<IAuthorizationHeaderBearerTokenParser, AuthorizationHeaderBearerTokenParser>();
+
             // Setup injection of ApiSecuritySettings configured in the
             // Function's app settings (or local.settings.json)
             // as IOptions<ApiSecuritySettings>.

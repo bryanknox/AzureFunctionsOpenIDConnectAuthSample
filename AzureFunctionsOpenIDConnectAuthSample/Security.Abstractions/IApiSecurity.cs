@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace SampleApp.Security.Abstractions
+namespace AzureFunctionsOpenIDConnectAuthSample.Security.Abstractions
 {
     public interface IApiSecurity
     {

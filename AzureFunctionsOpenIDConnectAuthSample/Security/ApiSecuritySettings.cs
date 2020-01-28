@@ -1,4 +1,4 @@
-﻿namespace SampleApp.Security
+﻿namespace AzureFunctionsOpenIDConnectAuthSample.Security
 {
     /// <summary>
     /// Encapsulates settings used in API authorization.

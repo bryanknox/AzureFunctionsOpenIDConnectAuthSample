@@ -1,8 +1,8 @@
-﻿using SampleApp.Security;
+﻿using AzureFunctionsOpenIDConnectAuthSample.Security;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 
-[assembly: FunctionsStartup(typeof(SampleApp.Startup))]
-namespace SampleApp
+[assembly: FunctionsStartup(typeof(AzureFunctionsOpenIDConnectAuthSample.Startup))]
+namespace AzureFunctionsOpenIDConnectAuthSample
 {
     public class Startup : FunctionsStartup
     {

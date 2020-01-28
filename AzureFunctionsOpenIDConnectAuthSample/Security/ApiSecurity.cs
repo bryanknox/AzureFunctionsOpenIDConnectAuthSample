@@ -1,11 +1,9 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using SampleApp.Security.Abstractions;
+using AzureFunctionsOpenIDConnectAuthSample.Security.Abstractions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -13,16 +11,19 @@ using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 
-namespace SampleApp.Security
+namespace AzureFunctionsOpenIDConnectAuthSample.Security
 {
     public class ApiSecurity : IApiSecurity
     {
+        private readonly IAuthorizationHeaderBearerTokenParser _authorizationHeaderBearerTokenParser;
         private readonly IConfigurationManager<OpenIdConnectConfiguration> _configurationManager;
 
         private readonly string _issuerUrl = null;
         private readonly string _audience = null;
 
-        public ApiSecurity(IOptions<ApiSecuritySettings> apiSecuritySettingsOptions)
+        public ApiSecurity(
+            IOptions<ApiSecuritySettings> apiSecuritySettingsOptions,
+            IAuthorizationHeaderBearerTokenParser authorizationHeaderBearerTokenParser)
         {
             _issuerUrl = apiSecuritySettingsOptions.Value.AuthorizationIssuerUrl;
             _audience = apiSecuritySettingsOptions.Value.AuthorizationAudience;
@@ -59,11 +60,13 @@ namespace SampleApp.Security
                 new OpenIdConnectConfigurationRetriever(),
                 documentRetriever
             );
+
+            _authorizationHeaderBearerTokenParser = authorizationHeaderBearerTokenParser;
         }
 
         public async Task<AuthorizationResult> Authorize(IHeaderDictionary httpRequestHeaders, ILogger log)
         {
-            string authorizationToken = GetAuthorizationTokenFromHeaders(httpRequestHeaders);
+            string authorizationToken = _authorizationHeaderBearerTokenParser.ParseToken(httpRequestHeaders);
             if (authorizationToken == null)
             {
                 return new AuthorizationResult("Authorization header missing or is not a Bearer token.");
@@ -145,36 +148,6 @@ namespace SampleApp.Security
             } while (claimsPrincipal == null && validationRetryCount <= 1);
 
             return new AuthorizationResult(claimsPrincipal, securityToken);
-        }
-
-        /// <summary>
-        /// Gets the JWT Bearer token from the given HTTP request headers.
-        /// </summary>
-        /// <param name="headers">
-        /// The headers from the HTTP request.
-        /// </param>
-        /// <returns>
-        /// The JWT Bearer token parsed from the Authorization header, or nul if the uthorization header was not found
-        /// or its value is not a Bearer token.
-        /// </returns>
-        private static string GetAuthorizationTokenFromHeaders(IHeaderDictionary headers)
-        {
-            // Get a StringValues object that represents the content of the Authorization header found in the given
-            // headers. If the Authorization header is not found the StringValues.Value returned will be nul.
-            // Default for a KeyValuePair<string, StringValues> has a Value that is a StringValue with a null string.
-            string rawAuthorizationHeaderValueString = headers.SingleOrDefault(x => x.Key == "Authorization").Value;
-
-            AuthenticationHeaderValue authenticationHeaderValue = AuthenticationHeaderValue.Parse(rawAuthorizationHeaderValueString);
-
-            if (authenticationHeaderValue == null 
-                || !string.Equals(authenticationHeaderValue.Scheme, "Bearer", StringComparison.InvariantCultureIgnoreCase))
-            {
-                // The Authorization header was not found, or its value was not a Bearer token.
-                return null;
-            }
-
-            // Return the token parsed from the Athorization header.
-            return authenticationHeaderValue.Parameter;
         }
     }
 }
