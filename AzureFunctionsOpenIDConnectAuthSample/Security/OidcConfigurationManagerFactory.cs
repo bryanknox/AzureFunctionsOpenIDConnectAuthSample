@@ -15,11 +15,6 @@ namespace AzureFunctionsOpenIDConnectAuthSample.Security
         /// </returns>
         public IOidcConfigurationManager New(string issuerUrl)
         {
-            if (!issuerUrl.EndsWith("/"))
-            {
-                issuerUrl += "/";
-            }
-
             return new OidcConfigurationManager(issuerUrl);
         }
     }

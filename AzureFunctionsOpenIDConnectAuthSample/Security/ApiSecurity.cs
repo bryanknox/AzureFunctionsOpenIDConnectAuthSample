@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AzureFunctionsOpenIDConnectAuthSample.Security.Abstractions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AzureFunctionsOpenIDConnectAuthSample.Security
@@ -27,17 +27,10 @@ namespace AzureFunctionsOpenIDConnectAuthSample.Security
             IJwtSecurityTokenHandlerWrapper jwtSecurityTokenHandlerWrapper,
             IOidcConfigurationManagerFactory oidcConfigurationManagerFactory)
         {
+            apiSecuritySettingsOptions.Value.ThrowIfInvalid();
+
             _issuerUrl = apiSecuritySettingsOptions.Value.AuthorizationIssuerUrl;
             _audience = apiSecuritySettingsOptions.Value.AuthorizationAudience;
-
-            if (string.IsNullOrWhiteSpace(_audience))
-            {
-                throw new Exception("Missing application setting. 'AuthorizationAudience' setting is not set.");
-            }
-            if (string.IsNullOrWhiteSpace(_issuerUrl))
-            {
-                throw new Exception("Missing application setting. 'AuthorizationIssuerUrl' setting is not set.");
-            }
 
             _authorizationHeaderBearerTokenParser = authorizationHeaderBearerTokenParser;
 
@@ -61,19 +54,19 @@ namespace AzureFunctionsOpenIDConnectAuthSample.Security
 
             do
             {
-                // Get the signing keys from issuer (Auth0).
-                OpenIdConnectConfiguration openIdConnectConfig = null;
+                IEnumerable<SecurityKey> isserSigningKeys = null;
                 try
                 {
-                    // Retrieve the OpenIdConnectConfig (containing the signing keys).
-                    // Get it from the OpenID Connect provider if they haven't been retreived already
-                    // since the last timeout or refresh, or get it from the cache.
-                    openIdConnectConfig = await _oidcConfigurationManager.GetConfigurationAsync();
+                    // Get the cached signing keys if they were retrieved previously. If they haven't been retrieved,
+                    // or the cached keys are stale, then a fresh set of signing keys are retrieved
+                    // from the OpenID Connect provider (issuer) cached and returned.
+                    // This method will throw if the configuration cannot be retrieved, instead of returning null.
+                    isserSigningKeys = await _oidcConfigurationManager.GetIssuerSigningKeysAsync();
                 }
                 catch (Exception ex)
                 {
                     throw new Exception(
-                        "Problem getting OpenIdConnectConfiguration from OpenID provider (issuer) via ConfigurationManager.",
+                        "Problem getting signing keys from Open ID Connect provider (issuer) via ConfigurationManager.",
                         ex);
                 }
 
@@ -86,7 +79,7 @@ namespace AzureFunctionsOpenIDConnectAuthSample.Security
                     ValidateIssuer = true,
                     ValidateIssuerSigningKey = true,
                     ValidateLifetime = true,
-                    IssuerSigningKeys = openIdConnectConfig.SigningKeys
+                    IssuerSigningKeys = isserSigningKeys
                 };
 
                 try
