@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Security.Claims;
-using System.Threading;
 using System.Threading.Tasks;
 using AzureFunctionsOpenIDConnectAuthSample.Security.Abstractions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 
@@ -15,10 +13,10 @@ namespace AzureFunctionsOpenIDConnectAuthSample.Security
     public class ApiSecurity : IApiSecurity
     {
         private readonly IAuthorizationHeaderBearerTokenParser _authorizationHeaderBearerTokenParser;
-        
-        private readonly IConfigurationManager<OpenIdConnectConfiguration> _configurationManager;
 
         private readonly IJwtSecurityTokenHandlerWrapper _jwtSecurityTokenHandlerWrapper;
+
+        private readonly IOidcConfigurationManager _oidcConfigurationManager;
 
         private readonly string _issuerUrl = null;
         private readonly string _audience = null;
@@ -26,7 +24,8 @@ namespace AzureFunctionsOpenIDConnectAuthSample.Security
         public ApiSecurity(
             IOptions<ApiSecuritySettings> apiSecuritySettingsOptions,
             IAuthorizationHeaderBearerTokenParser authorizationHeaderBearerTokenParser,
-            IJwtSecurityTokenHandlerWrapper jwtSecurityTokenHandlerWrapper)
+            IJwtSecurityTokenHandlerWrapper jwtSecurityTokenHandlerWrapper,
+            IOidcConfigurationManagerFactory oidcConfigurationManagerFactory)
         {
             _issuerUrl = apiSecuritySettingsOptions.Value.AuthorizationIssuerUrl;
             _audience = apiSecuritySettingsOptions.Value.AuthorizationAudience;
@@ -39,34 +38,12 @@ namespace AzureFunctionsOpenIDConnectAuthSample.Security
             {
                 throw new Exception("Missing application setting. 'AuthorizationIssuerUrl' setting is not set.");
             }
-            if (!_issuerUrl.StartsWith("https://"))
-            {
-                throw new Exception("Application setting error. 'AuthorizationIssuerUrl' setting must start with \"https://\".");
-            }
-            if (!_issuerUrl.EndsWith("/"))
-            {
-                throw new Exception("Application setting error. 'AuthorizationIssuerUrl' setting must end \"/\".");
-            }
-
-            var documentRetriever = new HttpDocumentRetriever { RequireHttps = _issuerUrl.StartsWith("https://") };
-
-            // Setup the ConfigurationManager to call the issuer (i.e. Auth0) of the signing keys.
-            // The ConfigurationManager caches the configuration it receives the OpenID provider (issuer)
-            // in order to reduce the number or requests to that provider.
-            //
-            // The configuration is not retrieved from the OpenID provider until the first time
-            // the ConfigurationManager.GetConfigurationAsync(..) is called in the Authorize(..) method below.
-            //
-            // The ConfigurationManager automatically refreshes the configuration after configurable timeouts. 
-            _configurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(
-                $"{_issuerUrl}.well-known/openid-configuration",
-                new OpenIdConnectConfigurationRetriever(),
-                documentRetriever
-            );
 
             _authorizationHeaderBearerTokenParser = authorizationHeaderBearerTokenParser;
 
             _jwtSecurityTokenHandlerWrapper = jwtSecurityTokenHandlerWrapper;
+
+            _oidcConfigurationManager = oidcConfigurationManagerFactory.New(_issuerUrl);
         }
 
         public async Task<AuthorizationResult> Authorize(IHeaderDictionary httpRequestHeaders, ILogger log)
@@ -88,10 +65,10 @@ namespace AzureFunctionsOpenIDConnectAuthSample.Security
                 OpenIdConnectConfiguration openIdConnectConfig = null;
                 try
                 {
-                    // Retrieve the OpenIdConnectConfig (containing the signing keys) from the OpenID provider,
-                    // if they haven't been retreived since the last timeout or refresh, otherwise get the cached
-                    // configuration.
-                    openIdConnectConfig = await _configurationManager.GetConfigurationAsync(CancellationToken.None);
+                    // Retrieve the OpenIdConnectConfig (containing the signing keys).
+                    // Get it from the OpenID Connect provider if they haven't been retreived already
+                    // since the last timeout or refresh, or get it from the cache.
+                    openIdConnectConfig = await _oidcConfigurationManager.GetConfigurationAsync();
                 }
                 catch (Exception ex)
                 {
@@ -136,7 +113,7 @@ namespace AzureFunctionsOpenIDConnectAuthSample.Security
                         "Exception validating token. JWT signature key not found."
                         + $" {(validationRetryCount == 0 ? "Retrying..." : "Refresh Retry Failed!")}.");
 
-                    _configurationManager.RequestRefresh();
+                    _oidcConfigurationManager.RequestRefresh();
 
                     validationRetryCount++;
                 }

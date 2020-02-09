@@ -14,6 +14,9 @@ namespace AzureFunctionsOpenIDConnectAuthSample.Security
             // This also needs to be a singleton, because the singledton IApiSecurity requires it.
             services.AddSingleton<IJwtSecurityTokenHandlerWrapper, JwtSecurityTokenHandlerWrapper>();
 
+            // This also needs to be a singleton, because the singledton IApiSecurity requires it.
+            services.AddSingleton<IOidcConfigurationManagerFactory, OidcConfigurationManagerFactory>();
+
             // Setup injection of ApiSecuritySettings configured in the
             // Function's app settings (or local.settings.json)
             // as IOptions<ApiSecuritySettings>.
