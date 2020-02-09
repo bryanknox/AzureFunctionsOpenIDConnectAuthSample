@@ -1,3 +1,14 @@
+// This is a sample "local.settings.json" file.
+// Make a copy of this file and rename it to "local.settings.json".
+//
+// This purpose of this file is to show the format of the app settings
+// that you'll need in your actual "local.settings.json" file.
+//
+// "local.settings.json" is .gitignore'd so it won't go into source control.
+//
+// Don't put any confidential information in this file!
+// This file is NOT .gitignore'd so changes to this file are committed to
+// source control.
 {
   "IsEncrypted": false,
   "Values": {
@@ -5,6 +16,7 @@
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
 
     // ApiSecuritySettings:AuthorizationAudience setting.
+    // Identifies the API to be authorized by the Open ID Connect provider (issuer).
     // The "Audiance" is the indentifer used by the authorization provider to indentify
     // the API (HTTP triggered Azure Function) being protected. This is often a URL but
     // For Auth0 the AuthorizationAudience setting set here should match the API's Identifier
@@ -12,6 +24,7 @@
     "ApiSecuritySettings:AuthorizationAudience": "Your-API-Identifier-goes-here",
 
     // ApiSecuritySettings:AuthorizationIssuerUrl setting.
+    // The URL of the Open ID Connect provider (issuer) that will perform API authorization.
     // The "Issuer" is the URL for the authorization provider's end-point.
     // This URL will be used as part of the OpenID Connect protocol to obtain the the signing keys
     // that will be used to validate the JWT tokens in incoming HTTP request headers.

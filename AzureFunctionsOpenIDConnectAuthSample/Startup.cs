@@ -1,8 +1,8 @@
-﻿using HttpFunctionAppAuth0Play.Security;
+﻿using AzureFunctionsOpenIDConnectAuthSample.Security;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 
-[assembly: FunctionsStartup(typeof(HttpFunctionAppAuth0Play.Startup))]
-namespace HttpFunctionAppAuth0Play
+[assembly: FunctionsStartup(typeof(AzureFunctionsOpenIDConnectAuthSample.Startup))]
+namespace AzureFunctionsOpenIDConnectAuthSample
 {
     public class Startup : FunctionsStartup
     {
