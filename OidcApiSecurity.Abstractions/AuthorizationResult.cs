@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 
-namespace AzureFunctionsOpenIDConnectAuthSample.Security
+namespace OidcApiSecurity.Abstractions
 {
     public class AuthorizationResult
     {

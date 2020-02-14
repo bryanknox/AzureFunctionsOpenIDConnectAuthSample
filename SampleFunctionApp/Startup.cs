@@ -1,14 +1,14 @@
-﻿using AzureFunctionsOpenIDConnectAuthSample.Security;
+﻿using OidcApiSecurity;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 
-[assembly: FunctionsStartup(typeof(AzureFunctionsOpenIDConnectAuthSample.Startup))]
-namespace AzureFunctionsOpenIDConnectAuthSample
+[assembly: FunctionsStartup(typeof(SampleFunctionApp.Startup))]
+namespace SampleFunctionApp
 {
     public class Startup : FunctionsStartup
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            builder.Services.AddApiSecurity();
+            builder.Services.AddOdicApiSecurity();
         }
     }
 }

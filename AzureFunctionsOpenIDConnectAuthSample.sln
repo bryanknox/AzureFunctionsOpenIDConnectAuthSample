@@ -13,6 +13,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OidcApiSecurity", "OidcApiSecurity\OidcApiSecurity.csproj", "{96D0F50D-73B1-46A1-A59D-3E2E45F6E9B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OidcApiSecurity.Abstractions", "OidcApiSecurity.Abstractions\OidcApiSecurity.Abstractions.csproj", "{61F2D099-B34F-4396-B855-7A957C14EE73}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +27,14 @@ Global
 		{BF2E4F94-79E5-4782-A2EA-7FB82A6776FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF2E4F94-79E5-4782-A2EA-7FB82A6776FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF2E4F94-79E5-4782-A2EA-7FB82A6776FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96D0F50D-73B1-46A1-A59D-3E2E45F6E9B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96D0F50D-73B1-46A1-A59D-3E2E45F6E9B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96D0F50D-73B1-46A1-A59D-3E2E45F6E9B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96D0F50D-73B1-46A1-A59D-3E2E45F6E9B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61F2D099-B34F-4396-B855-7A957C14EE73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61F2D099-B34F-4396-B855-7A957C14EE73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61F2D099-B34F-4396-B855-7A957C14EE73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61F2D099-B34F-4396-B855-7A957C14EE73}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 
-namespace AzureFunctionsOpenIDConnectAuthSample.Security.Abstractions
+namespace OidcApiSecurity.Abstractions
 {
     public interface IOidcConfigurationManager
     {

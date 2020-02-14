@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using AzureFunctionsOpenIDConnectAuthSample.Security.Abstractions;
+using OidcApiSecurity.Abstractions;
 
-namespace AzureFunctionsOpenIDConnectAuthSample.Security
+namespace OidcApiSecurity
 {
     public static class ServicesConfigurationExtensions
     {
-        public static void AddApiSecurity(this IServiceCollection services)
+        public static void AddOdicApiSecurity(this IServiceCollection services)
         {
             // This also needs to be a singleton, because the singledton IApiSecurity requires it.
             services.AddSingleton<IAuthorizationHeaderBearerTokenParser, AuthorizationHeaderBearerTokenParser>();

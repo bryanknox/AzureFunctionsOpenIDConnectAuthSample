@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Net.Http.Headers;
-using AzureFunctionsOpenIDConnectAuthSample.Security.Abstractions;
 using Microsoft.AspNetCore.Http;
+using OidcApiSecurity.Abstractions;
 
-namespace AzureFunctionsOpenIDConnectAuthSample.Security
+namespace OidcApiSecurity
 {
     public class AuthorizationHeaderBearerTokenParser : IAuthorizationHeaderBearerTokenParser
     {

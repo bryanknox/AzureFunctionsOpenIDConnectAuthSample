@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AzureFunctionsOpenIDConnectAuthSample.Security
+namespace OidcApiSecurity
 {
     /// <summary>
     /// Encapsulates settings used in API authorization.

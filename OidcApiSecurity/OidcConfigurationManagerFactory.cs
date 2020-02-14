@@ -1,6 +1,6 @@
-﻿using AzureFunctionsOpenIDConnectAuthSample.Security.Abstractions;
+﻿using OidcApiSecurity.Abstractions;
 
-namespace AzureFunctionsOpenIDConnectAuthSample.Security
+namespace OidcApiSecurity
 {
     public class OidcConfigurationManagerFactory : IOidcConfigurationManagerFactory
     {

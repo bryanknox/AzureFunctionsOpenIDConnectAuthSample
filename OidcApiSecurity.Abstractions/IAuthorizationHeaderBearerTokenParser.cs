@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace AzureFunctionsOpenIDConnectAuthSample.Security.Abstractions
+namespace OidcApiSecurity.Abstractions
 {
     public interface IAuthorizationHeaderBearerTokenParser
     {

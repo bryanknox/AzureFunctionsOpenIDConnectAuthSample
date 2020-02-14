@@ -1,4 +1,4 @@
-﻿namespace AzureFunctionsOpenIDConnectAuthSample.Security.Abstractions
+﻿namespace OidcApiSecurity.Abstractions
 {
     public interface IOidcConfigurationManagerFactory
     {

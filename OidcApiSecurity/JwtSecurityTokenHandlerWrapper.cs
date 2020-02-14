@@ -1,9 +1,9 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using AzureFunctionsOpenIDConnectAuthSample.Security.Abstractions;
 using Microsoft.IdentityModel.Tokens;
+using OidcApiSecurity.Abstractions;
 
-namespace AzureFunctionsOpenIDConnectAuthSample.Security
+namespace OidcApiSecurity
 {
     public class JwtSecurityTokenHandlerWrapper : IJwtSecurityTokenHandlerWrapper
     {

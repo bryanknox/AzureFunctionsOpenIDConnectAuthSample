@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 
-namespace AzureFunctionsOpenIDConnectAuthSample.Security.Abstractions
+namespace OidcApiSecurity.Abstractions
 {
     public interface IJwtSecurityTokenHandlerWrapper
     {
