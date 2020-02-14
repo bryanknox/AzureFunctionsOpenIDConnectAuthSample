@@ -25,7 +25,7 @@ namespace AzureFunctionsOpenIDConnectAuthSample
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            log.LogWarning("C# HTTP trigger function received a request.");
 
             AuthorizationResult authorizationResult = await _apiSecurity.Authorize(req.Headers, log);
             if (!authorizationResult.Success)
