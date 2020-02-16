@@ -3,7 +3,7 @@
 namespace OidcApiAuthorization
 {
     /// <summary>
-    /// Encapsulates settings used in OpenID Connect (ODIC) API authorization.
+    /// Encapsulates settings used in OpenID Connect (OIDC) API authorization.
     /// </summary>
     public class OidcApiAuthorizationSettings
     {
