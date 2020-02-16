@@ -1,4 +1,4 @@
-﻿namespace OidcApiSecurity.Abstractions
+﻿namespace OidcApiAuthorization.Abstractions
 {
     public interface IOidcConfigurationManagerFactory
     {

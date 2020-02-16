@@ -1,6 +1,6 @@
-﻿using OidcApiSecurity.Abstractions;
+﻿using OidcApiAuthorization.Abstractions;
 
-namespace OidcApiSecurity
+namespace OidcApiAuthorization
 {
     public class OidcConfigurationManagerFactory : IOidcConfigurationManagerFactory
     {

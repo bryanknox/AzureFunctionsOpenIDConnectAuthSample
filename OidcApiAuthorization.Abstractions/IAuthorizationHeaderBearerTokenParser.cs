@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace OidcApiSecurity.Abstractions
+namespace OidcApiAuthorization.Abstractions
 {
     public interface IAuthorizationHeaderBearerTokenParser
     {

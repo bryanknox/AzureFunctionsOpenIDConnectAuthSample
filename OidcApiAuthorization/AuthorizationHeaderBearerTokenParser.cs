@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Http;
-using OidcApiSecurity.Abstractions;
+using OidcApiAuthorization.Abstractions;
 
-namespace OidcApiSecurity
+namespace OidcApiAuthorization
 {
     public class AuthorizationHeaderBearerTokenParser : IAuthorizationHeaderBearerTokenParser
     {

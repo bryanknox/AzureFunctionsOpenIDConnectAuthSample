@@ -1,6 +1,7 @@
 # AzureFunctionsOpenIDConnectAuthSample
-Sample Azure Functions app that shows the use of OpenIDConnect (OIDC) to protect access to an HTTP triggered Azure Function. 
-So it uses OAuth 2.0 JSON Web Tokens (JWT) Bearer tokens.
+Sample Azure Functions app that shows the use of OpenID Connect (OIDC) to protect access to an HTTP triggered Azure Function. 
+
+OIDC uses OAuth 2.0 JSON Web Tokens (JWT) (Bearer tokens) as part of the mechanism for API authorization security.
 
 # This Sample Uses:
 - Azure Functions v3

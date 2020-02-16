@@ -1,5 +1,5 @@
-﻿using OidcApiSecurity;
-using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+﻿using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+using OidcApiAuthorization;
 
 [assembly: FunctionsStartup(typeof(SampleFunctionApp.Startup))]
 namespace SampleFunctionApp
@@ -8,7 +8,7 @@ namespace SampleFunctionApp
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            builder.Services.AddOdicApiSecurity();
+            builder.Services.AddOidcApiAuthorization();
         }
     }
 }

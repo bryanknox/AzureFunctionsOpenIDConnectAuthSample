@@ -15,20 +15,20 @@
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
 
-    // ApiSecuritySettings:AuthorizationAudience setting.
+    // OidcApiAuthorizationSettings:AuthorizationAudience setting.
     // Identifies the API to be authorized by the Open ID Connect provider (issuer).
     // The "Audiance" is the indentifer used by the authorization provider to indentify
     // the API (HTTP triggered Azure Function) being protected. This is often a URL but
     // For Auth0 the AuthorizationAudience setting set here should match the API's Identifier
     // in the Auth0 Dashboard.
-    "ApiSecuritySettings:AuthorizationAudience": "Your-API-Identifier-goes-here",
+    "OidcApiAuthorizationSettings:AuthorizationAudience": "Your-API-Identifier-goes-here",
 
-    // ApiSecuritySettings:AuthorizationIssuerUrl setting.
+    // OidcApiAuthorizationSettings:AuthorizationIssuerUrl setting.
     // The URL of the Open ID Connect provider (issuer) that will perform API authorization.
     // The "Issuer" is the URL for the authorization provider's end-point.
     // This URL will be used as part of the OpenID Connect protocol to obtain the the signing keys
     // that will be used to validate the JWT tokens in incoming HTTP request headers.
     // For Auth0 AuthorizationIssuerUrl will have the format "https://{Auth0-tenant-domain}.auth0.com".
-    "ApiSecuritySettings:AuthorizationIssuerUrl": "https://your-authorization-provider-end-point-url/"
+    "OidcApiAuthorizationSettings:AuthorizationIssuerUrl": "https://your-authorization-provider-end-point-url/"
   }
 }

@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
-using OidcApiSecurity.Abstractions;
+using OidcApiAuthorization.Abstractions;
 
-namespace OidcApiSecurity
+namespace OidcApiAuthorization
 {
     public class OidcConfigurationManager : IOidcConfigurationManager
     {

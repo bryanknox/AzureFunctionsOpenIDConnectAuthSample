@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace OidcApiSecurity.Abstractions
+namespace OidcApiAuthorization.Abstractions
 {
-    public interface IApiSecurity
+    public interface IApiAuthorization
     {
         Task<AuthorizationResult> Authorize(IHeaderDictionary httpRequestHeaders, ILogger log);
     }

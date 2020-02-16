@@ -6,17 +6,17 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using OidcApiSecurity.Abstractions;
+using OidcApiAuthorization.Abstractions;
 
 namespace SampleFunctionApp
 {
     public class Function1
     {
-        private IApiSecurity _apiSecurity;
+        private IApiAuthorization _apiAuthorization;
 
-        public Function1(IApiSecurity apiSecurity)
+        public Function1(IApiAuthorization apiAuthorization)
         {
-            _apiSecurity = apiSecurity;
+            _apiAuthorization = apiAuthorization;
         }
 
         [FunctionName(nameof(Function1))]
@@ -26,7 +26,7 @@ namespace SampleFunctionApp
         {
             log.LogWarning("C# HTTP trigger function received a request.");
 
-            AuthorizationResult authorizationResult = await _apiSecurity.Authorize(req.Headers, log);
+            AuthorizationResult authorizationResult = await _apiAuthorization.Authorize(req.Headers, log);
             if (!authorizationResult.Success)
             {
                 log.LogWarning(authorizationResult.FailureReason);

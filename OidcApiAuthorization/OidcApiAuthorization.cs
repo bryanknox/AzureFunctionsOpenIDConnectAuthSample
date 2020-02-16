@@ -6,11 +6,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using OidcApiSecurity.Abstractions;
+using OidcApiAuthorization.Abstractions;
 
-namespace OidcApiSecurity
+namespace OidcApiAuthorization
 {
-    public class ApiSecurity : IApiSecurity
+    /// <summary>
+    /// Encapsulates checks of OpenID Connect (OIDC) Authorization tokens in HTTP request headers.
+    /// </summary>
+    public class OidcApiAuthorization : IApiAuthorization
     {
         private readonly IAuthorizationHeaderBearerTokenParser _authorizationHeaderBearerTokenParser;
 
@@ -21,16 +24,16 @@ namespace OidcApiSecurity
         private readonly string _issuerUrl = null;
         private readonly string _audience = null;
 
-        public ApiSecurity(
-            IOptions<ApiSecuritySettings> apiSecuritySettingsOptions,
+        public OidcApiAuthorization(
+            IOptions<OidcApiAuthorizationSettings> apiAuthorizationSettingsOptions,
             IAuthorizationHeaderBearerTokenParser authorizationHeaderBearerTokenParser,
             IJwtSecurityTokenHandlerWrapper jwtSecurityTokenHandlerWrapper,
             IOidcConfigurationManagerFactory oidcConfigurationManagerFactory)
         {
-            apiSecuritySettingsOptions.Value.ThrowIfInvalid();
+            apiAuthorizationSettingsOptions.Value.ThrowIfMissingSettings();
 
-            _issuerUrl = apiSecuritySettingsOptions.Value.AuthorizationIssuerUrl;
-            _audience = apiSecuritySettingsOptions.Value.AuthorizationAudience;
+            _issuerUrl = apiAuthorizationSettingsOptions.Value.AuthorizationIssuerUrl;
+            _audience = apiAuthorizationSettingsOptions.Value.AuthorizationAudience;
 
             _authorizationHeaderBearerTokenParser = authorizationHeaderBearerTokenParser;
 
@@ -39,6 +42,22 @@ namespace OidcApiSecurity
             _oidcConfigurationManager = oidcConfigurationManagerFactory.New(_issuerUrl);
         }
 
+        /// <summary>
+        /// Checks the given HTTP request headers for a valid OpenID Connect (OIDC) Authorization token.
+        /// </summary>
+        /// <param name="httpRequestHeaders">
+        /// The HTTP request headers to check.
+        /// </param>
+        /// <param name="log">
+        /// The log where warning messages are written.
+        /// </param>
+        /// <returns>
+        /// AuthorizationResult.Success == true if succesfully authorized, otherwise AuthorizationResult.Success == false.
+        /// </returns>
+        /// <remarks>
+        /// When AuthorizationResult.Success == false then AuthorizationResult.FailureReason will
+        /// contain information about the failure that may be useful for dignostics and/or logging.
+        /// </remarks>
         public async Task<AuthorizationResult> Authorize(IHeaderDictionary httpRequestHeaders, ILogger log)
         {
             string authorizationBearerToken = _authorizationHeaderBearerTokenParser.ParseToken(httpRequestHeaders);

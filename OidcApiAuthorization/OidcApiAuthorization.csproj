@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OidcApiSecurity.Abstractions\OidcApiSecurity.Abstractions.csproj" />
+    <ProjectReference Include="..\OidcApiAuthorization.Abstractions\OidcApiAuthorization.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

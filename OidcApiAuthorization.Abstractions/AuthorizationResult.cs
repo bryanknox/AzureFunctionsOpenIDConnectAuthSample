@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 
-namespace OidcApiSecurity.Abstractions
+namespace OidcApiAuthorization.Abstractions
 {
     public class AuthorizationResult
     {

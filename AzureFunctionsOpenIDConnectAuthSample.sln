@@ -13,9 +13,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OidcApiSecurity", "OidcApiSecurity\OidcApiSecurity.csproj", "{96D0F50D-73B1-46A1-A59D-3E2E45F6E9B8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OidcApiAuthorization", "OidcApiAuthorization\OidcApiAuthorization.csproj", "{96D0F50D-73B1-46A1-A59D-3E2E45F6E9B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OidcApiSecurity.Abstractions", "OidcApiSecurity.Abstractions\OidcApiSecurity.Abstractions.csproj", "{61F2D099-B34F-4396-B855-7A957C14EE73}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OidcApiAuthorization.Abstractions", "OidcApiAuthorization.Abstractions\OidcApiAuthorization.Abstractions.csproj", "{61F2D099-B34F-4396-B855-7A957C14EE73}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
