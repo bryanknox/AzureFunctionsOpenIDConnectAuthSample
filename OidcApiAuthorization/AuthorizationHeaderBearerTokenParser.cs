@@ -16,15 +16,21 @@ namespace OidcApiAuthorization
         /// </param>
         /// <returns>
         /// The JWT Bearer token parsed from the Authorization header,
-        /// or nul if the uthorization header was not found
+        /// or null if the uthorization header was not found
         /// or its value is not a Bearer token.
         /// </returns>
         public string ParseToken(IHeaderDictionary httpRequestHeaders)
         {
             // Get a StringValues object that represents the content of the Authorization header found in the given
-            // headers. If the Authorization header is not found the StringValues.Value returned will be null.
-            // Default for a KeyValuePair<string, StringValues> has a Value that is a StringValue with a null string.
-            string rawAuthorizationHeaderValueString = httpRequestHeaders.SingleOrDefault(x => x.Key == "Authorization").Value;
+            // headers.
+            var rawAuthorizationHeaderValue = httpRequestHeaders.SingleOrDefault(x => x.Key == "Authorization").Value;
+            if (rawAuthorizationHeaderValue.Count != 1)
+            {
+                // StringValues' Count will be zero if there is no Authorization header
+                // and greater than one if there are more than one Authorization headers.
+                return null;
+            }
+            string rawAuthorizationHeaderValueString = rawAuthorizationHeaderValue;
 
             AuthenticationHeaderValue authenticationHeaderValue = AuthenticationHeaderValue.Parse(rawAuthorizationHeaderValueString);
 
