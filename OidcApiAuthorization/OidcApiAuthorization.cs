@@ -52,7 +52,8 @@ namespace OidcApiAuthorization
         /// The log where warning messages are written.
         /// </param>
         /// <returns>
-        /// AuthorizationResult.Success == true if succesfully authorized, otherwise AuthorizationResult.Success == false.
+        /// AuthorizationResult.Success == true if succesfully authorized,
+        /// otherwise AuthorizationResult.Success == false.
         /// </returns>
         /// <remarks>
         /// When AuthorizationResult.Success == false then AuthorizationResult.FailureReason will
@@ -63,7 +64,8 @@ namespace OidcApiAuthorization
             string authorizationBearerToken = _authorizationHeaderBearerTokenParser.ParseToken(httpRequestHeaders);
             if (authorizationBearerToken == null)
             {
-                return new AuthorizationResult("Authorization header is missing or is not a Bearer token.");
+                return new AuthorizationResult(
+                    "Authorization header is missing, invalid format, or is not a Bearer token.");
             }
 
             ClaimsPrincipal claimsPrincipal = null;
@@ -76,17 +78,22 @@ namespace OidcApiAuthorization
                 IEnumerable<SecurityKey> isserSigningKeys = null;
                 try
                 {
-                    // Get the cached signing keys if they were retrieved previously. If they haven't been retrieved,
-                    // or the cached keys are stale, then a fresh set of signing keys are retrieved
-                    // from the OpenID Connect provider (issuer) cached and returned.
+                    // Get the cached signing keys if they were retrieved previously. 
+                    // If they haven't been retrieved, or the cached keys are stale,
+                    // then a fresh set of signing keys are retrieved from the OpenID Connect provider
+                    // (issuer) cached and returned.
                     // This method will throw if the configuration cannot be retrieved, instead of returning null.
                     isserSigningKeys = await _oidcConfigurationManager.GetIssuerSigningKeysAsync();
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(
-                        "Problem getting signing keys from Open ID Connect provider (issuer) via ConfigurationManager.",
-                        ex);
+                    const string message =
+                        "Problem getting signing keys from Open ID Connect provider (issuer)"
+                        + " via ConfigurationManager.";
+
+                    log.LogError(ex, message);
+
+                    throw new Exception(message, ex);
                 }
 
                 var tokenValidationParameters = new TokenValidationParameters
