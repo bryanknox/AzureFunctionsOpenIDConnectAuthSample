@@ -51,6 +51,23 @@ namespace AuthorizationHeaderBearerTokenParserTests
         }
 
         [Fact]
+        public void Returns_null_if_Bearer_token_is_empty()
+        {
+            var httpRequestHeaders = new HeaderDictionary()
+            {
+                new KeyValuePair<string, StringValues>("header1", "header1value"),
+                new KeyValuePair<string, StringValues>("Authorization", "Bearer "),
+                new KeyValuePair<string, StringValues>("header3", "header3value")
+            };
+
+            var parser = new AuthorizationHeaderBearerTokenParser();
+
+            string token = parser.ParseToken(httpRequestHeaders);
+
+            Assert.Null(token);
+        }
+
+        [Fact]
         public void Returns_null_if_no_Authorization_header()
         {
             var httpRequestHeaders = new HeaderDictionary()
@@ -95,7 +112,24 @@ namespace AuthorizationHeaderBearerTokenParserTests
             var httpRequestHeaders = new HeaderDictionary()
             {
                 new KeyValuePair<string, StringValues>("header1", "header1value"),
-                new KeyValuePair<string, StringValues>("Authorization", "header2value"),
+                new KeyValuePair<string, StringValues>("Authorization", "notBearerHeader2value"),
+                new KeyValuePair<string, StringValues>("header3", "header3value")
+            };
+
+            var parser = new AuthorizationHeaderBearerTokenParser();
+
+            string token = parser.ParseToken(httpRequestHeaders);
+
+            Assert.Null(token);
+        }
+
+        [Fact]
+        public void Returns_null_if_token_has_invalid_format()
+        {
+            var httpRequestHeaders = new HeaderDictionary()
+            {
+                new KeyValuePair<string, StringValues>("header1", "header1value"),
+                new KeyValuePair<string, StringValues>("Authorization", "tokenCanNot,HaveAComma"),
                 new KeyValuePair<string, StringValues>("header3", "header3value")
             };
 
