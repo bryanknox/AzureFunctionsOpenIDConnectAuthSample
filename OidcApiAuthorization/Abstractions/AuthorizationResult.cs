@@ -3,6 +3,8 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace OidcApiAuthorization.Abstractions
 {
+    // TODO: Rename to ApiAuthorizerResult. There is an AuthorizationResult in Microsoft.AspNetCore.Authorization.
+
     public class AuthorizationResult
     {
         public AuthorizationResult(ClaimsPrincipal claimsPrincipal, SecurityToken securityToken)

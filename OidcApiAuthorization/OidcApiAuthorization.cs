@@ -10,6 +10,8 @@ using OidcApiAuthorization.Abstractions;
 
 namespace OidcApiAuthorization
 {
+    // TODO: Rename to OidcApiAuthorizer
+
     /// <summary>
     /// Encapsulates checks of OpenID Connect (OIDC) Authorization tokens in HTTP request headers.
     /// </summary>
