@@ -17,10 +17,10 @@ namespace SampleFunctionApp.Tests
         {
             const string expectedFailureReason = "some reason to fail.";
 
-            var fakeApiAuthorization = new FakeApiAuthorization()
+            var fakeApiAuthorization = new FakeApiAuthorizationService()
             {
                 // Setup for athuorization fails.
-                AuthorizationResultForTests = new AuthorizationResult(expectedFailureReason)
+                ApiAuthorizationResultForTests = new ApiAuthorizationResult(expectedFailureReason)
             };
 
             HttpRequest httpRequest = HttpRequestFactoryFixture.CreateHttpGetRequest(
@@ -49,10 +49,10 @@ namespace SampleFunctionApp.Tests
         {
             const string expecetedName = "Some Name";
 
-            var fakeApiAuthorization = new FakeApiAuthorization()
+            var fakeApiAuthorization = new FakeApiAuthorizationService()
             {
                 // Setup to fake athuorization success.
-                AuthorizationResultForTests = new AuthorizationResult(
+                ApiAuthorizationResultForTests = new ApiAuthorizationResult(
                     new ClaimsPrincipal(),
                     new FakeSecurityToken())
             };
@@ -94,10 +94,10 @@ namespace SampleFunctionApp.Tests
             };
             foreach (string jsonBody in testJsonBodies)
             {
-                var fakeApiAuthorization = new FakeApiAuthorization()
+                var fakeApiAuthorizationService = new FakeApiAuthorizationService()
                 {
                     // Setup to fake athuorization success.
-                    AuthorizationResultForTests = new AuthorizationResult(
+                    ApiAuthorizationResultForTests = new ApiAuthorizationResult(
                         new ClaimsPrincipal(),
                         new FakeSecurityToken())
                 };
@@ -107,7 +107,7 @@ namespace SampleFunctionApp.Tests
 
                 var listLogger = new ListLoggerFixture();
 
-                var func = new HelloFunction(fakeApiAuthorization);
+                var func = new HelloFunction(fakeApiAuthorizationService);
 
                 IActionResult actionResult = await func.Run(httpRequest, listLogger);
 

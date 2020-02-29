@@ -5,18 +5,18 @@ using OidcApiAuthorization.Abstractions;
 
 namespace OidcApiAuthorization.TestFixtures
 {
-    public class FakeApiAuthorization : IApiAuthorization
+    public class FakeApiAuthorizationService : IApiAuthorization
     {
-        public AuthorizationResult AuthorizationResultForTests { get; set; }
+        public ApiAuthorizationResult ApiAuthorizationResultForTests { get; set; }
 
         // IApiAuthorization members.
 
-        public async Task<AuthorizationResult> Authorize(IHeaderDictionary httpRequestHeaders, ILogger log)
+        public async Task<ApiAuthorizationResult> AuthorizeAsync(IHeaderDictionary httpRequestHeaders, ILogger log)
         {
             // Prevent compiler Warning CS1998 "This async method lacks 'await' operators and ..."
             await Task.FromResult(0);
 
-            return AuthorizationResultForTests;
+            return ApiAuthorizationResultForTests;
         }
     }
 }

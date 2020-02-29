@@ -4,10 +4,8 @@ using Microsoft.Extensions.Logging;
 
 namespace OidcApiAuthorization.Abstractions
 {
-    // TODO: Rename to IApiauthorizer
     public interface IApiAuthorization
     {
-        // TODO: Rename to AuthorizeAsync(..)
-        Task<AuthorizationResult> Authorize(IHeaderDictionary httpRequestHeaders, ILogger log);
+        Task<ApiAuthorizationResult> AuthorizeAsync(IHeaderDictionary httpRequestHeaders, ILogger log);
     }
 }

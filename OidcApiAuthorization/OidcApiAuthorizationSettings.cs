@@ -2,8 +2,6 @@
 
 namespace OidcApiAuthorization
 {
-    // TODO: Rename to OidcApiAuthorizerSettings
-
     /// <summary>
     /// Encapsulates settings used in OpenID Connect (OIDC) API authorization.
     /// </summary>

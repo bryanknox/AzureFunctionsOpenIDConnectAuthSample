@@ -10,12 +10,10 @@ using OidcApiAuthorization.Abstractions;
 
 namespace OidcApiAuthorization
 {
-    // TODO: Rename to OidcApiAuthorizer
-
     /// <summary>
     /// Encapsulates checks of OpenID Connect (OIDC) Authorization tokens in HTTP request headers.
     /// </summary>
-    public class OidcApiAuthorization : IApiAuthorization
+    public class OidcApiAuthorizationService : IApiAuthorization
     {
         private readonly IAuthorizationHeaderBearerTokenParser _authorizationHeaderBearerTokenParser;
 
@@ -26,7 +24,7 @@ namespace OidcApiAuthorization
         private readonly string _issuerUrl = null;
         private readonly string _audience = null;
 
-        public OidcApiAuthorization(
+        public OidcApiAuthorizationService(
             IOptions<OidcApiAuthorizationSettings> apiAuthorizationSettingsOptions,
             IAuthorizationHeaderBearerTokenParser authorizationHeaderBearerTokenParser,
             IJwtSecurityTokenHandlerWrapper jwtSecurityTokenHandlerWrapper,
@@ -61,12 +59,12 @@ namespace OidcApiAuthorization
         /// When AuthorizationResult.Success == false then AuthorizationResult.FailureReason will
         /// contain information about the failure that may be useful for dignostics and/or logging.
         /// </remarks>
-        public async Task<AuthorizationResult> Authorize(IHeaderDictionary httpRequestHeaders, ILogger log)
+        public async Task<ApiAuthorizationResult> AuthorizeAsync(IHeaderDictionary httpRequestHeaders, ILogger log)
         {
             string authorizationBearerToken = _authorizationHeaderBearerTokenParser.ParseToken(httpRequestHeaders);
             if (authorizationBearerToken == null)
             {
-                return new AuthorizationResult(
+                return new ApiAuthorizationResult(
                     "Authorization header is missing, invalid format, or is not a Bearer token.");
             }
 
@@ -144,11 +142,11 @@ namespace OidcApiAuthorization
                         tokenException,
                         $"Authorization Failed. Exception caught while validating token.");
 
-                    return new AuthorizationResult("Authorization Failed.");
+                    return new ApiAuthorizationResult("Authorization Failed.");
                 }
             } while (claimsPrincipal == null && validationRetryCount <= 1);
 
-            return new AuthorizationResult(claimsPrincipal, securityToken);
+            return new ApiAuthorizationResult(claimsPrincipal, securityToken);
         }
     }
 }
