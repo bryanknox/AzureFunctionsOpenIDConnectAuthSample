@@ -9,7 +9,7 @@ using Xunit;
 
 namespace SampleFunctionApp.Tests
 {
-    public class Function1Tests
+    public class HelloFunctionTests
     {
 
         [Fact]
@@ -29,7 +29,7 @@ namespace SampleFunctionApp.Tests
 
             var listLogger = new ListLoggerFixture();
 
-            var func = new Function1(fakeApiAuthorization);
+            var func = new HelloFunction(fakeApiAuthorization);
 
             IActionResult actionResult = await func.Run(httpRequest, listLogger);
 
@@ -64,7 +64,7 @@ namespace SampleFunctionApp.Tests
 
             var listLogger = new ListLoggerFixture();
 
-            var func = new Function1(fakeApiAuthorization);
+            var func = new HelloFunction(fakeApiAuthorization);
 
             IActionResult actionResult = await func.Run(httpRequest, listLogger);
 
@@ -107,7 +107,7 @@ namespace SampleFunctionApp.Tests
 
                 var listLogger = new ListLoggerFixture();
 
-                var func = new Function1(fakeApiAuthorization);
+                var func = new HelloFunction(fakeApiAuthorization);
 
                 IActionResult actionResult = await func.Run(httpRequest, listLogger);
 

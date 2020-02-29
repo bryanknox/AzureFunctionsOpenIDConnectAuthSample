@@ -10,16 +10,16 @@ using OidcApiAuthorization.Abstractions;
 
 namespace SampleFunctionApp
 {
-    public class Function1
+    public class HelloFunction
     {
         private IApiAuthorization _apiAuthorization;
 
-        public Function1(IApiAuthorization apiAuthorization)
+        public HelloFunction(IApiAuthorization apiAuthorization)
         {
             _apiAuthorization = apiAuthorization;
         }
 
-        [FunctionName(nameof(Function1))]
+        [FunctionName(nameof(HelloFunction))]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
             ILogger log)
