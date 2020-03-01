@@ -1,0 +1,27 @@
+name: .NET Core
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+
+    # Checkout source code from the repo.
+    - uses: actions/checkout@v2
+
+    # Setup the .Net Core SDK (dotnet CLI to use).
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.102
+
+    # Build the solution.
+    - name: Build solution with dotnet
+      run: dotnet build --configuration Release
+
+    # Run the unit tests.
+    - name: Run unit tests
+      run: dotnet test

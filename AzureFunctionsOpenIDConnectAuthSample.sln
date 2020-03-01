@@ -21,7 +21,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleFunctionApp.Tests", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestFixtures.AzureFunctions", "TestFixtures.AzureFunctions\TestFixtures.AzureFunctions.csproj", "{C1DD13F8-EDD7-4014-B8A4-31BBB2B4F4E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OidcApiAuthorization.TestFixtures", "OidcApiAuthorization.TestFixtures\OidcApiAuthorization.TestFixtures.csproj", "{D3825B52-9FBE-45D5-A4F6-42C741C2922D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OidcApiAuthorization.TestFixtures", "OidcApiAuthorization.TestFixtures\OidcApiAuthorization.TestFixtures.csproj", "{D3825B52-9FBE-45D5-A4F6-42C741C2922D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{13A2FBFA-B274-4D04-895F-BAE130B8B616}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{6F55AFC0-0710-4FDC-BD64-1CD30EDE412E}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\dotnetcore-ci.yml = .github\workflows\dotnetcore-ci.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,6 +63,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{13A2FBFA-B274-4D04-895F-BAE130B8B616} = {8CE3C1A0-ED50-406D-AF16-1F95DD4271C3}
+		{6F55AFC0-0710-4FDC-BD64-1CD30EDE412E} = {13A2FBFA-B274-4D04-895F-BAE130B8B616}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C2EF6A4C-C2DA-4CC5-B493-7AF06AA6AFD7}
