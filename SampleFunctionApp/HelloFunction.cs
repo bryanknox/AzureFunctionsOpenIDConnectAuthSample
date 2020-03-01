@@ -10,43 +10,38 @@ using OidcApiAuthorization.Abstractions;
 
 namespace SampleFunctionApp
 {
-    public class Function1
+    public class HelloFunction
     {
         private IApiAuthorization _apiAuthorization;
 
-        public Function1(IApiAuthorization apiAuthorization)
+        public HelloFunction(IApiAuthorization apiAuthorization)
         {
             _apiAuthorization = apiAuthorization;
         }
 
-        [FunctionName(nameof(Function1))]
+        [FunctionName(nameof(HelloFunction))]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
             ILogger log)
         {
             log.LogWarning("C# HTTP trigger function received a request.");
 
-            AuthorizationResult authorizationResult = await _apiAuthorization.Authorize(req.Headers, log);
+            ApiAuthorizationResult authorizationResult = await _apiAuthorization.AuthorizeAsync(req.Headers, log);
             if (!authorizationResult.Success)
             {
                 log.LogWarning(authorizationResult.FailureReason);
                 return new UnauthorizedResult();
             }
-            log.LogInformation("C# HTTP trigger function rquest is authorized.");
+            log.LogWarning("C# HTTP trigger function rquest is authorized.");
 
-            // Parse name from query parameter.
-            string name = req.Query["name"];
-
-            // Get request body
+            // Get name from request body.
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             dynamic data = JsonConvert.DeserializeObject(requestBody);
+            string name = data?.name;
 
-            // Set name to query string or body data.
-            name = name ?? data?.name;
-
-            return name != null
+            return !string.IsNullOrWhiteSpace(name)
                 ? (ActionResult)new OkObjectResult($"Hello, {name}")
-                : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
+                : new BadRequestObjectResult("Please pass a name the request body.");
         }
     }
 }

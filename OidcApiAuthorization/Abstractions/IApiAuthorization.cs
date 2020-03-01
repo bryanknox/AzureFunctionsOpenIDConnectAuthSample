@@ -6,6 +6,6 @@ namespace OidcApiAuthorization.Abstractions
 {
     public interface IApiAuthorization
     {
-        Task<AuthorizationResult> Authorize(IHeaderDictionary httpRequestHeaders, ILogger log);
+        Task<ApiAuthorizationResult> AuthorizeAsync(IHeaderDictionary httpRequestHeaders, ILogger log);
     }
 }

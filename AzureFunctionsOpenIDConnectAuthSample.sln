@@ -13,9 +13,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OidcApiAuthorization", "OidcApiAuthorization\OidcApiAuthorization.csproj", "{96D0F50D-73B1-46A1-A59D-3E2E45F6E9B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OidcApiAuthorization", "OidcApiAuthorization\OidcApiAuthorization.csproj", "{96D0F50D-73B1-46A1-A59D-3E2E45F6E9B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OidcApiAuthorization.Abstractions", "OidcApiAuthorization.Abstractions\OidcApiAuthorization.Abstractions.csproj", "{61F2D099-B34F-4396-B855-7A957C14EE73}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OidcApiAuthorization.Tests", "OidcApiAuthorization.Tests\OidcApiAuthorization.Tests.csproj", "{C2F82F9D-2168-4653-81E8-E729DB9049F3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleFunctionApp.Tests", "SampleFunctionApp.Tests\SampleFunctionApp.Tests.csproj", "{2E28F575-13CA-4997-B100-DCE71E75F2D9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestFixtures.AzureFunctions", "TestFixtures.AzureFunctions\TestFixtures.AzureFunctions.csproj", "{C1DD13F8-EDD7-4014-B8A4-31BBB2B4F4E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OidcApiAuthorization.TestFixtures", "OidcApiAuthorization.TestFixtures\OidcApiAuthorization.TestFixtures.csproj", "{D3825B52-9FBE-45D5-A4F6-42C741C2922D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +37,22 @@ Global
 		{96D0F50D-73B1-46A1-A59D-3E2E45F6E9B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96D0F50D-73B1-46A1-A59D-3E2E45F6E9B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96D0F50D-73B1-46A1-A59D-3E2E45F6E9B8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{61F2D099-B34F-4396-B855-7A957C14EE73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{61F2D099-B34F-4396-B855-7A957C14EE73}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{61F2D099-B34F-4396-B855-7A957C14EE73}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{61F2D099-B34F-4396-B855-7A957C14EE73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2F82F9D-2168-4653-81E8-E729DB9049F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2F82F9D-2168-4653-81E8-E729DB9049F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2F82F9D-2168-4653-81E8-E729DB9049F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2F82F9D-2168-4653-81E8-E729DB9049F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E28F575-13CA-4997-B100-DCE71E75F2D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E28F575-13CA-4997-B100-DCE71E75F2D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E28F575-13CA-4997-B100-DCE71E75F2D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E28F575-13CA-4997-B100-DCE71E75F2D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1DD13F8-EDD7-4014-B8A4-31BBB2B4F4E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1DD13F8-EDD7-4014-B8A4-31BBB2B4F4E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1DD13F8-EDD7-4014-B8A4-31BBB2B4F4E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1DD13F8-EDD7-4014-B8A4-31BBB2B4F4E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3825B52-9FBE-45D5-A4F6-42C741C2922D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3825B52-9FBE-45D5-A4F6-42C741C2922D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3825B52-9FBE-45D5-A4F6-42C741C2922D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3825B52-9FBE-45D5-A4F6-42C741C2922D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

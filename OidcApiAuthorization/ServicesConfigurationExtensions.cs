@@ -32,7 +32,7 @@ namespace OidcApiAuthorization
             // That helps reduce the number of calls to the authorization service
             // for the signing keys and other stuff that can be used across multiple
             // calls to the HTTP triggered Azure Functions.
-            services.AddSingleton<IApiAuthorization, OidcApiAuthorization>();
+            services.AddSingleton<IApiAuthorization, OidcApiAuthorizationService>();
         }
     }
 }

@@ -39,7 +39,7 @@ namespace OidcApiAuthorization
             }
             set
             {
-                if (value != null && !value.EndsWith("/"))
+                if (!string.IsNullOrWhiteSpace(value) && !value.EndsWith("/"))
                 {
                     _issuerUrl = value + "/";
                 }
