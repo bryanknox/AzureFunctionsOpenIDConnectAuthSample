@@ -1,9 +1,10 @@
-name: .NET Core
+name: CI build and run unit tests
 
 on: [push]
 
 jobs:
-  build:
+  build_and_unittest:
+    name: Build and Run Unit Tests
 
     runs-on: windows-latest
 
