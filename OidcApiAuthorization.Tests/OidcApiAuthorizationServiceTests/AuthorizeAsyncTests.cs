@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.Http;
 using OidcApiAuthorization;
 using OidcApiAuthorization.Abstractions;
+using OidcApiAuthorization.TestFixtures;
 using TestFixtures.AzureFunctions;
 using Xunit;
 
@@ -15,11 +12,30 @@ namespace OidcApiAuthorizationServiceTests
         [Fact]
         public async void Returns_failure_if_bad_Aurthorization_header()
         {
+            const string audianceForTest = "audianceForTest";
+            const string issuerUrlForTest = "https://issuerUrl.for.test/";
+
             var listLogger = new ListLoggerFixture();
 
-            IOptions<OidcApiAuthorizationSettings> fakeApiAuthorizationSettingsOptions = null;
+            var fakeApiAuthorizationSettingsOptions
+                = new FakeOptions<OidcApiAuthorizationSettings>()
+                {
+                    Value = new OidcApiAuthorizationSettings()
+                    {
+                        AuthorizationAudience = audianceForTest,
+                        AuthorizationIssuerUrl = issuerUrlForTest
+                    }
+                };
 
-            IAuthorizationHeaderBearerTokenParser fakeAuthorizationHeaderBearerTokenParser = null;
+            var fakeAuthorizationHeaderBearerTokenParser = new FakeAuthorizationHeaderBearerTokenParser()
+            {
+                ParsedTokenToReturn = null // No Authorization token was found.
+            };
+
+            var fakeOidcConfigurationManagerFactory = new FakeOidcConfigurationManagerFactory()
+            {
+                IOidcConfigurationManagerToReturn = null // Not  accessed in this test.
+            };
 
             IHeaderDictionary httpRequestHeaders = null;
 
@@ -27,7 +43,7 @@ namespace OidcApiAuthorizationServiceTests
                 fakeApiAuthorizationSettingsOptions,
                 fakeAuthorizationHeaderBearerTokenParser,
                 jwtSecurityTokenHandlerWrapper: null, // Not accessed in this test.
-                oidcConfigurationManagerFactory: null); // Not accessed in this test.
+                fakeOidcConfigurationManagerFactory);
 
             ApiAuthorizationResult result = await service.AuthorizeAsync(
                 httpRequestHeaders,
