@@ -15,12 +15,12 @@ namespace SampleFunctionApp.Tests
         [Fact]
         public async void Authorization_fail_returns_UnauthorizedResult()
         {
-            const string expectedFailureReason = "some reason to fail.";
+            const string ExpectedFailureReason = "some reason to fail.";
 
             var fakeApiAuthorization = new FakeApiAuthorizationService()
             {
                 // Setup for athuorization fails.
-                ApiAuthorizationResultForTests = new ApiAuthorizationResult(expectedFailureReason)
+                ApiAuthorizationResultForTests = new ApiAuthorizationResult(ExpectedFailureReason)
             };
 
             HttpRequest httpRequest = HttpRequestFactoryFixture.CreateHttpGetRequest(
@@ -41,13 +41,13 @@ namespace SampleFunctionApp.Tests
 
             Assert.True(listLogger.HasLogEntryMessageContaining(
                 LogLevel.Warning,
-                expectedFailureReason));
+                ExpectedFailureReason));
         }
 
         [Fact]
         public async void Happy_path_returns_OkObjectResult_with_hello_text()
         {
-            const string expecetedName = "Some Name";
+            const string ExpecetedName = "Some Name";
 
             var fakeApiAuthorization = new FakeApiAuthorizationService()
             {
@@ -57,7 +57,7 @@ namespace SampleFunctionApp.Tests
                     new FakeSecurityToken())
             };
 
-            string jsonBody = $"{{ \"name\": \"{expecetedName}\" }}";
+            string jsonBody = $"{{ \"name\": \"{ExpecetedName}\" }}";
 
             HttpRequest httpRequest = HttpRequestFactoryFixture.CreateHttpPostRequest(
                 jsonBody);
@@ -72,7 +72,7 @@ namespace SampleFunctionApp.Tests
 
             Assert.IsType<OkObjectResult>(actionResult);
 
-            Assert.Equal($"Hello, {expecetedName}", ((OkObjectResult)actionResult).Value);
+            Assert.Equal($"Hello, {ExpecetedName}", ((OkObjectResult)actionResult).Value);
 
             Assert.NotEmpty(listLogger.LogEntries);
 

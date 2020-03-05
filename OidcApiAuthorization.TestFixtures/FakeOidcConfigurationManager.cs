@@ -13,7 +13,7 @@ namespace OidcApiAuthorization.TestFixtures
 
         public bool GetIssuerSigningKeysAsyncShouldThrow { get; set; }
 
-        public IEnumerable<SecurityKey> SecurityKeyForTest { get; set; }
+        public IEnumerable<SecurityKey> SecurityKeysForTest { get; set; }
 
 
         // IOidcConfigurationManager members
@@ -27,7 +27,7 @@ namespace OidcApiAuthorization.TestFixtures
             {
                 throw new TestException(ExceptionMessageForTest);
             }
-            return SecurityKeyForTest;
+            return SecurityKeysForTest;
         }
 
         public void RequestRefresh()

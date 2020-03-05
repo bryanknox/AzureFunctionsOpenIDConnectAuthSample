@@ -78,7 +78,7 @@ namespace OidcApiAuthorization
 
             do
             {
-                IEnumerable<SecurityKey> isserSigningKeys = null;
+                IEnumerable<SecurityKey> isserSigningKeys;
                 try
                 {
                     // Get the cached signing keys if they were retrieved previously. 
@@ -90,13 +90,13 @@ namespace OidcApiAuthorization
                 }
                 catch (Exception ex)
                 {
-                    const string message =
+                    const string Message =
                         "Problem getting signing keys from Open ID Connect provider (issuer)"
                         + " via ConfigurationManager.";
 
-                    log.LogError(ex, message);
+                    log.LogError(ex, Message);
 
-                    throw new Exception(message, ex);
+                    throw new Exception(Message, ex);
                 }
 
                 var tokenValidationParameters = new TokenValidationParameters

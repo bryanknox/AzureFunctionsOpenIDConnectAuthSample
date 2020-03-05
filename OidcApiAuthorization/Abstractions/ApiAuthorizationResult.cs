@@ -39,6 +39,10 @@ namespace OidcApiAuthorization.Abstractions
         /// </summary>
         public ClaimsPrincipal ClaimsPrincipal { get; }
 
+        /// <summary>
+        /// True if authorization failed.
+        /// </summary>
+        public bool Failed => ClaimsPrincipal == null || !string.IsNullOrEmpty(FailureReason);
 
         /// <summary>
         /// String describing the reason for the authorization failure.
@@ -53,6 +57,6 @@ namespace OidcApiAuthorization.Abstractions
         /// <summary>
         /// True if authorization was successful.
         /// </summary>
-        public bool Success => ClaimsPrincipal != null && string.IsNullOrEmpty(FailureReason);
+        public bool Success => !Failed;
     }
 }

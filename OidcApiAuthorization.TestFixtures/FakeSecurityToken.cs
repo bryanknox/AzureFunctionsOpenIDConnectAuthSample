@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
-namespace TestFixtures.AzureFunctions
+namespace OidcApiAuthorization.TestFixtures
 {
     public class FakeSecurityToken : SecurityToken
     {
