@@ -9,7 +9,7 @@ namespace OidcApiAuthorizationServiceTests
     public class ConstructorTests
     {
         [Fact]
-        public void Constructor_throws_if_missing_settings()
+        public void Throws_if_missing_settings()
         {
             var fakeApiAuthorizationSettingsOptions
                 = new FakeOptions<OidcApiAuthorizationSettings>()
@@ -30,11 +30,14 @@ namespace OidcApiAuthorizationServiceTests
                     oidcConfigurationManagerFactory: null) // Not accessed in this test.
             );
 
+            // Check that the exception thrown is the one we're lookging for.
+            // We are NOT trying to enforce a requirement on the particular
+            // message text.
             Assert.StartsWith("Missing application setting.",  ex.Message);
         }
 
         [Fact]
-        public void Constructor_uses_configuration_manager_factory()
+        public void Uses_configuration_manager_factory()
         {
             const string audianceForTest = "audianceForTest";
             const string issuerUrlForTest = "https://issuerUrl.for.test/";
@@ -70,7 +73,5 @@ namespace OidcApiAuthorizationServiceTests
             // Test that the issuer URL was sent to the Oidc Configuration Manager Factory.
             Assert.Equal(issuerUrlForTest, fakeOidcConfigurationManagerFactory.IssuerUrlReceived);
         }
-
-
     }
 }

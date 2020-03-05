@@ -3,14 +3,31 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using OidcApiAuthorization.Abstractions;
+using TestFixtures.AzureFunctions;
 
 namespace OidcApiAuthorization.TestFixtures
 {
     public class FakeOidcConfigurationManager : IOidcConfigurationManager
     {
-        public Task<IEnumerable<SecurityKey>> GetIssuerSigningKeysAsync()
+        public string ExceptionMessageForTest { get; set; }
+
+        public bool GetIssuerSigningKeysAsyncShouldThrow { get; set; }
+
+        public IEnumerable<SecurityKey> SecurityKeyForTest { get; set; }
+
+
+        // IOidcConfigurationManager members
+
+        public async Task<IEnumerable<SecurityKey>> GetIssuerSigningKeysAsync()
         {
-            throw new NotImplementedException();
+            // Prevent compiler Warning CS1998 "This async method lacks 'await' operators and ..."
+            await Task.FromResult(0);
+
+            if (GetIssuerSigningKeysAsyncShouldThrow)
+            {
+                throw new TestException(ExceptionMessageForTest);
+            }
+            return SecurityKeyForTest;
         }
 
         public void RequestRefresh()
