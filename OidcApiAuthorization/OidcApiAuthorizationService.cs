@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using OidcApiAuthorization.Abstractions;
@@ -48,20 +47,11 @@ namespace OidcApiAuthorization
         /// <param name="httpRequestHeaders">
         /// The HTTP request headers to check.
         /// </param>
-        /// <param name="log">
-        /// The log where warning messages are written.
-        /// </param>
         /// <returns>
-        /// AuthorizationResult.Success == true if succesfully authorized,
-        /// otherwise AuthorizationResult.Success == false.
+        /// Informatoin about the success or failure of the authorization.
         /// </returns>
-        /// <remarks>
-        /// When AuthorizationResult.Success == false then AuthorizationResult.FailureReason will
-        /// contain information about the failure that may be useful for dignostics and/or logging.
-        /// </remarks>
         public async Task<ApiAuthorizationResult> AuthorizeAsync(
-            IHeaderDictionary httpRequestHeaders, 
-            ILogger log)
+            IHeaderDictionary httpRequestHeaders)
         {
             string authorizationBearerToken = _authorizationHeaderBearerTokenParser.ParseToken(
                 httpRequestHeaders);
@@ -90,13 +80,9 @@ namespace OidcApiAuthorization
                 }
                 catch (Exception ex)
                 {
-                    const string Message =
-                        "Problem getting signing keys from Open ID Connect provider (issuer)"
-                        + " via ConfigurationManager.";
-
-                    log.LogError(ex, Message);
-
-                    throw new Exception(Message, ex);
+                    return new ApiAuthorizationResult(
+                        "Problem getting signing keys from Open ID Connect provider (issuer)."
+                        + $" ConfigurationManager threw {ex.GetType()} Message: {ex.Message}");
                 }
 
                 var tokenValidationParameters = new TokenValidationParameters
@@ -123,7 +109,7 @@ namespace OidcApiAuthorization
                         tokenValidationParameters,
                         out securityToken);
                 }
-                catch (SecurityTokenSignatureKeyNotFoundException keyNotFoundException)
+                catch (SecurityTokenSignatureKeyNotFoundException)
                 {
                     // A SecurityTokenSignatureKeyNotFoundException is thrown if the signature key for
                     // validating JWT tokens could not be found. This could happen if the issuer has
@@ -132,22 +118,15 @@ namespace OidcApiAuthorization
                     // which causes it to retreive the keys again, and then we retry the validation.
                     // We only retry once.
 
-                    log.LogWarning(
-                        keyNotFoundException,
-                        "Exception validating token. JWT signature key not found."
-                        + $" {(validationRetryCount == 0 ? "Retrying..." : "Refresh Retry Failed!")}.");
-
                     _oidcConfigurationManager.RequestRefresh();
 
                     validationRetryCount++;
                 }
-                catch (SecurityTokenException tokenException)
+                catch (Exception ex)
                 {
-                    log.LogWarning(
-                        tokenException,
-                        $"Authorization Failed. Exception caught while validating token.");
-
-                    return new ApiAuthorizationResult("Authorization Failed.");
+                    return new ApiAuthorizationResult(
+                        $"Authorization Failed. {ex.GetType()} caught while validating JWT token."
+                        + $"Message: {ex.Message}");
                 }
             } while (claimsPrincipal == null && validationRetryCount <= 1);
 

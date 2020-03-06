@@ -26,7 +26,7 @@ namespace SampleFunctionApp
         {
             log.LogWarning("C# HTTP trigger function received a request.");
 
-            ApiAuthorizationResult authorizationResult = await _apiAuthorization.AuthorizeAsync(req.Headers, log);
+            ApiAuthorizationResult authorizationResult = await _apiAuthorization.AuthorizeAsync(req.Headers);
             if (authorizationResult.Failed)
             {
                 log.LogWarning(authorizationResult.FailureReason);
