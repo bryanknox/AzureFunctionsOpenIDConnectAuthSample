@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OidcApiAuthorization\OidcApiAuthorization.csproj" />
+    <ProjectReference Include="..\TestFixtures.AzureFunctions\TestFixtures.AzureFunctions.csproj" />
   </ItemGroup>
 
 </Project>

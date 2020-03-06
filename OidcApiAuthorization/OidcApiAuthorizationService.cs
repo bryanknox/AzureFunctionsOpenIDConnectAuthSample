@@ -59,9 +59,12 @@ namespace OidcApiAuthorization
         /// When AuthorizationResult.Success == false then AuthorizationResult.FailureReason will
         /// contain information about the failure that may be useful for dignostics and/or logging.
         /// </remarks>
-        public async Task<ApiAuthorizationResult> AuthorizeAsync(IHeaderDictionary httpRequestHeaders, ILogger log)
+        public async Task<ApiAuthorizationResult> AuthorizeAsync(
+            IHeaderDictionary httpRequestHeaders, 
+            ILogger log)
         {
-            string authorizationBearerToken = _authorizationHeaderBearerTokenParser.ParseToken(httpRequestHeaders);
+            string authorizationBearerToken = _authorizationHeaderBearerTokenParser.ParseToken(
+                httpRequestHeaders);
             if (authorizationBearerToken == null)
             {
                 return new ApiAuthorizationResult(
@@ -75,7 +78,7 @@ namespace OidcApiAuthorization
 
             do
             {
-                IEnumerable<SecurityKey> isserSigningKeys = null;
+                IEnumerable<SecurityKey> isserSigningKeys;
                 try
                 {
                     // Get the cached signing keys if they were retrieved previously. 
@@ -87,13 +90,13 @@ namespace OidcApiAuthorization
                 }
                 catch (Exception ex)
                 {
-                    const string message =
+                    const string Message =
                         "Problem getting signing keys from Open ID Connect provider (issuer)"
                         + " via ConfigurationManager.";
 
-                    log.LogError(ex, message);
+                    log.LogError(ex, Message);
 
-                    throw new Exception(message, ex);
+                    throw new Exception(Message, ex);
                 }
 
                 var tokenValidationParameters = new TokenValidationParameters
@@ -112,7 +115,8 @@ namespace OidcApiAuthorization
                 {
                     // Try to validate the token.
                     // Throws if the the token cannot be validated.
-                    // If the token is successfully validiate then the ClaimsPrincipal from the JWT is returned.
+                    // If the token is successfully validiated then the ClaimsPrincipal from the JWT
+                    // is returned.
                     // The ClaimsPrincipal returned does not include claims found in the JWT header.
                     claimsPrincipal = _jwtSecurityTokenHandlerWrapper.ValidateToken(
                         authorizationBearerToken,
@@ -121,11 +125,12 @@ namespace OidcApiAuthorization
                 }
                 catch (SecurityTokenSignatureKeyNotFoundException keyNotFoundException)
                 {
-                    // A SecurityTokenSignatureKeyNotFoundException is thrown if the signature key for validating
-                    // JWT tokens could not be found. This could happen if the issuer has changed the signing keys
-                    // since the last time they were retreived by the ConfigurationManager.
-                    // To handle this we ask the ConfigurationManger to refresh which causes it to retreive the keys
-                    // again, and then we retry the validation. We only retry once.
+                    // A SecurityTokenSignatureKeyNotFoundException is thrown if the signature key for
+                    // validating JWT tokens could not be found. This could happen if the issuer has
+                    // changed the signing keys since the last time they were retreived by the
+                    // ConfigurationManager. To handle this we ask the ConfigurationManger to refresh
+                    // which causes it to retreive the keys again, and then we retry the validation.
+                    // We only retry once.
 
                     log.LogWarning(
                         keyNotFoundException,

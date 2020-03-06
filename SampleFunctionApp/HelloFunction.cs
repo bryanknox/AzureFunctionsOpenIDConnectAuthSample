@@ -12,7 +12,7 @@ namespace SampleFunctionApp
 {
     public class HelloFunction
     {
-        private IApiAuthorization _apiAuthorization;
+        private readonly IApiAuthorization _apiAuthorization;
 
         public HelloFunction(IApiAuthorization apiAuthorization)
         {
@@ -27,7 +27,7 @@ namespace SampleFunctionApp
             log.LogWarning("C# HTTP trigger function received a request.");
 
             ApiAuthorizationResult authorizationResult = await _apiAuthorization.AuthorizeAsync(req.Headers, log);
-            if (!authorizationResult.Success)
+            if (authorizationResult.Failed)
             {
                 log.LogWarning(authorizationResult.FailureReason);
                 return new UnauthorizedResult();
