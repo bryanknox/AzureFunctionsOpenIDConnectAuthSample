@@ -13,6 +13,8 @@ namespace OidcApiAuthorization.TestFixtures
 
         public bool GetIssuerSigningKeysAsyncShouldThrow { get; set; }
 
+        public int RequestRefreshCalledCount { get; set; }
+
         public IEnumerable<SecurityKey> SecurityKeysForTest { get; set; }
 
 
@@ -32,7 +34,7 @@ namespace OidcApiAuthorization.TestFixtures
 
         public void RequestRefresh()
         {
-            throw new NotImplementedException();
+            ++RequestRefreshCalledCount;
         }
     }
 }

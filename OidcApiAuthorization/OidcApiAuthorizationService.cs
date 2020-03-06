@@ -115,8 +115,8 @@ namespace OidcApiAuthorization
                 {
                     // Try to validate the token.
                     // Throws if the the token cannot be validated.
-                    // If the token is successfully validiate then the ClaimsPrincipal from the JWT is
-                    // returned.
+                    // If the token is successfully validiated then the ClaimsPrincipal from the JWT
+                    // is returned.
                     // The ClaimsPrincipal returned does not include claims found in the JWT header.
                     claimsPrincipal = _jwtSecurityTokenHandlerWrapper.ValidateToken(
                         authorizationBearerToken,

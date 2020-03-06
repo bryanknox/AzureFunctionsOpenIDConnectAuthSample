@@ -17,21 +17,130 @@ namespace OidcApiAuthorizationServiceTests
         [Fact]
         public async Task Retrys_once_if_SecurityTokenSignatureKeyNotFoundException()
         {
-            // TODO: Implement Retrys_once_if_SecurityTokenSignatureKeyNotFoundException()
-            Assert.True(false);
+            const string AudianceForTest = "audianceForTest";
+            const string IssuerUrlForTest = "https://issuerUrl.for.test/";
+            const string ParsedTokenForTest = "parsedTokenForTest";
 
-            // Prevent compiler Warning CS1998 "This async method lacks 'await' operators and ..."
-            await Task.FromResult(0);
+            var claimsPrincipalForTest = new ClaimsPrincipal();
+            var securityTokenForTest = new FakeSecurityToken();
+
+            var listLogger = new ListLoggerFixture();
+
+            var fakeApiAuthorizationSettingsOptions
+                = new FakeOptions<OidcApiAuthorizationSettings>()
+                {
+                    Value = new OidcApiAuthorizationSettings()
+                    {
+                        AuthorizationAudience = AudianceForTest,
+                        AuthorizationIssuerUrl = IssuerUrlForTest
+                    }
+                };
+
+            var fakeAuthorizationHeaderBearerTokenParser = new FakeAuthorizationHeaderBearerTokenParser()
+            {
+                ParsedTokenToReturn = ParsedTokenForTest
+            };
+
+            var fakeJwtSecurityTokenHandlerWrapper = new FakeJwtSecurityTokenHandlerWrapper()
+            {
+                ThrowFirstTime = true,
+                ClaimsPrincipalToReturn = claimsPrincipalForTest,
+                SecurityTokenToOutput = securityTokenForTest
+            };
+
+            var fakeOidcConfigurationManager = new FakeOidcConfigurationManager()
+            {
+                SecurityKeysForTest = new List<SecurityKey>()
+            };
+
+            var fakeOidcConfigurationManagerFactory = new FakeOidcConfigurationManagerFactory()
+            {
+                IOidcConfigurationManagerToReturn = fakeOidcConfigurationManager
+            };
+
+            IHeaderDictionary httpRequestHeaders = null;
+
+            var service = new OidcApiAuthorizationService(
+                fakeApiAuthorizationSettingsOptions,
+                fakeAuthorizationHeaderBearerTokenParser,
+                fakeJwtSecurityTokenHandlerWrapper,
+                fakeOidcConfigurationManagerFactory);
+
+            ApiAuthorizationResult result = await service.AuthorizeAsync(
+                httpRequestHeaders,
+                listLogger);
+
+            Assert.True(result.Success);
+
+            Assert.Equal(claimsPrincipalForTest, result.ClaimsPrincipal);
+            Assert.Equal(securityTokenForTest, result.SecurityToken);
+
+            Assert.Equal(2, fakeJwtSecurityTokenHandlerWrapper.ValidateTokenCalledCount);
+
+            Assert.Equal(1, fakeOidcConfigurationManager.RequestRefreshCalledCount);
         }
 
         [Fact]
         public async Task Returns_failure_for_unauthorized_token()
         {
-            // TODO: Implement Returns_failure_for_unauthorized_token()
-            Assert.True(false);
-            
-            // Prevent compiler Warning CS1998 "This async method lacks 'await' operators and ..."
-            await Task.FromResult(0);
+            const string AudianceForTest = "audianceForTest";
+            const string IssuerUrlForTest = "https://issuerUrl.for.test/";
+            const string ParsedTokenForTest = "parsedTokenForTest";
+
+            var claimsPrincipalForTest = new ClaimsPrincipal();
+            var securityTokenForTest = new FakeSecurityToken();
+
+            var listLogger = new ListLoggerFixture();
+
+            var fakeApiAuthorizationSettingsOptions
+                = new FakeOptions<OidcApiAuthorizationSettings>()
+                {
+                    Value = new OidcApiAuthorizationSettings()
+                    {
+                        AuthorizationAudience = AudianceForTest,
+                        AuthorizationIssuerUrl = IssuerUrlForTest
+                    }
+                };
+
+            var fakeAuthorizationHeaderBearerTokenParser = new FakeAuthorizationHeaderBearerTokenParser()
+            {
+                ParsedTokenToReturn = ParsedTokenForTest
+            };
+
+            var fakeJwtSecurityTokenHandlerWrapper = new FakeJwtSecurityTokenHandlerWrapper()
+            {
+                // Normally a SecurityTokenException will be thrown when the token is not authorized.
+                ExceptionToThrow = new SecurityTokenException()
+            };
+
+            var fakeOidcConfigurationManager = new FakeOidcConfigurationManager()
+            {
+                SecurityKeysForTest = new List<SecurityKey>()
+            };
+
+            var fakeOidcConfigurationManagerFactory = new FakeOidcConfigurationManagerFactory()
+            {
+                IOidcConfigurationManagerToReturn = fakeOidcConfigurationManager
+            };
+
+            IHeaderDictionary httpRequestHeaders = null;
+
+            var service = new OidcApiAuthorizationService(
+                fakeApiAuthorizationSettingsOptions,
+                fakeAuthorizationHeaderBearerTokenParser,
+                fakeJwtSecurityTokenHandlerWrapper,
+                fakeOidcConfigurationManagerFactory);
+
+            ApiAuthorizationResult result = await service.AuthorizeAsync(
+                httpRequestHeaders,
+                listLogger);
+
+            Assert.True(result.Failed);
+            Assert.False(result.Success);
+
+            Assert.Equal(1, fakeJwtSecurityTokenHandlerWrapper.ValidateTokenCalledCount);
+
+            Assert.Equal(0, fakeOidcConfigurationManager.RequestRefreshCalledCount);
         }
 
         [Fact]
