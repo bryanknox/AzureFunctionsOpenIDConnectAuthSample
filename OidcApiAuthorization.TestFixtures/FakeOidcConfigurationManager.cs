@@ -11,8 +11,6 @@ namespace OidcApiAuthorization.TestFixtures
     {
         public string ExceptionMessageForTest { get; set; }
 
-        public bool GetIssuerSigningKeysAsyncShouldThrow { get; set; }
-
         public int RequestRefreshCalledCount { get; set; }
 
         public IEnumerable<SecurityKey> SecurityKeysForTest { get; set; }
@@ -25,7 +23,7 @@ namespace OidcApiAuthorization.TestFixtures
             // Prevent compiler Warning CS1998 "This async method lacks 'await' operators and ..."
             await Task.FromResult(0);
 
-            if (GetIssuerSigningKeysAsyncShouldThrow)
+            if (ExceptionMessageForTest != null)
             {
                 throw new TestException(ExceptionMessageForTest);
             }
