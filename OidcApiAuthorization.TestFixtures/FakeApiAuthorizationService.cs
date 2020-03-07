@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using OidcApiAuthorization.Abstractions;
 
 namespace OidcApiAuthorization.TestFixtures
@@ -11,7 +10,7 @@ namespace OidcApiAuthorization.TestFixtures
 
         // IApiAuthorization members.
 
-        public async Task<ApiAuthorizationResult> AuthorizeAsync(IHeaderDictionary httpRequestHeaders, ILogger log)
+        public async Task<ApiAuthorizationResult> AuthorizeAsync(IHeaderDictionary httpRequestHeaders)
         {
             // Prevent compiler Warning CS1998 "This async method lacks 'await' operators and ..."
             await Task.FromResult(0);
