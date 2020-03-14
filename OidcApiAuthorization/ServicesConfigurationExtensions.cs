@@ -9,7 +9,7 @@ namespace OidcApiAuthorization
         public static void AddOidcApiAuthorization(this IServiceCollection services)
         {
             // This also needs to be a singleton, because the singledton IApiAuthorization requires it.
-            services.AddSingleton<IAuthorizationHeaderBearerTokenParser, AuthorizationHeaderBearerTokenParser>();
+            services.AddSingleton<IAuthorizationHeaderBearerTokenExtractor, AuthorizationHeaderBearerTokenExtractor>();
 
             // This also needs to be a singleton, because the singledton IApiAuthorization requires it.
             services.AddSingleton<IJwtSecurityTokenHandlerWrapper, JwtSecurityTokenHandlerWrapper>();

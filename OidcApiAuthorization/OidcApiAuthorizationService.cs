@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -14,7 +13,7 @@ namespace OidcApiAuthorization
     /// </summary>
     public class OidcApiAuthorizationService : IApiAuthorization
     {
-        private readonly IAuthorizationHeaderBearerTokenParser _authorizationHeaderBearerTokenParser;
+        private readonly IAuthorizationHeaderBearerTokenExtractor _authorizationHeaderBearerTokenExractor;
 
         private readonly IJwtSecurityTokenHandlerWrapper _jwtSecurityTokenHandlerWrapper;
 
@@ -25,7 +24,7 @@ namespace OidcApiAuthorization
 
         public OidcApiAuthorizationService(
             IOptions<OidcApiAuthorizationSettings> apiAuthorizationSettingsOptions,
-            IAuthorizationHeaderBearerTokenParser authorizationHeaderBearerTokenParser,
+            IAuthorizationHeaderBearerTokenExtractor authorizationHeaderBearerTokenExractor,
             IJwtSecurityTokenHandlerWrapper jwtSecurityTokenHandlerWrapper,
             IOidcConfigurationManagerFactory oidcConfigurationManagerFactory)
         {
@@ -34,11 +33,11 @@ namespace OidcApiAuthorization
             _issuerUrl = apiAuthorizationSettingsOptions.Value.AuthorizationIssuerUrl;
             _audience = apiAuthorizationSettingsOptions.Value.AuthorizationAudience;
 
-            _authorizationHeaderBearerTokenParser = authorizationHeaderBearerTokenParser;
+            _authorizationHeaderBearerTokenExractor = authorizationHeaderBearerTokenExractor;
 
             _jwtSecurityTokenHandlerWrapper = jwtSecurityTokenHandlerWrapper;
 
-            _oidcConfigurationManager = oidcConfigurationManagerFactory.New(_issuerUrl);
+            _oidcConfigurationManager = oidcConfigurationManagerFactory.Create(_issuerUrl);
         }
 
         /// <summary>
@@ -53,7 +52,7 @@ namespace OidcApiAuthorization
         public async Task<ApiAuthorizationResult> AuthorizeAsync(
             IHeaderDictionary httpRequestHeaders)
         {
-            string authorizationBearerToken = _authorizationHeaderBearerTokenParser.ParseToken(
+            string authorizationBearerToken = _authorizationHeaderBearerTokenExractor.GetToken(
                 httpRequestHeaders);
             if (authorizationBearerToken == null)
             {
@@ -61,8 +60,7 @@ namespace OidcApiAuthorization
                     "Authorization header is missing, invalid format, or is not a Bearer token.");
             }
 
-            ClaimsPrincipal claimsPrincipal = null;
-            SecurityToken securityToken = null;
+            bool isTokenValid = false;
 
             int validationRetryCount = 0;
 
@@ -85,37 +83,37 @@ namespace OidcApiAuthorization
                         + $" ConfigurationManager threw {ex.GetType()} Message: {ex.Message}");
                 }
 
-                var tokenValidationParameters = new TokenValidationParameters
-                {
-                    RequireSignedTokens = true,
-                    ValidAudience = _audience,
-                    ValidateAudience = true,
-                    ValidIssuer = _issuerUrl,
-                    ValidateIssuer = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidateLifetime = true,
-                    IssuerSigningKeys = isserSigningKeys
-                };
-
                 try
                 {
                     // Try to validate the token.
+
+                    var tokenValidationParameters = new TokenValidationParameters
+                    {
+                        RequireSignedTokens = true,
+                        ValidAudience = _audience,
+                        ValidateAudience = true,
+                        ValidIssuer = _issuerUrl,
+                        ValidateIssuer = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidateLifetime = true,
+                        IssuerSigningKeys = isserSigningKeys
+                    };
+
                     // Throws if the the token cannot be validated.
-                    // If the token is successfully validiated then the ClaimsPrincipal from the JWT
-                    // is returned.
-                    // The ClaimsPrincipal returned does not include claims found in the JWT header.
-                    claimsPrincipal = _jwtSecurityTokenHandlerWrapper.ValidateToken(
+                    _jwtSecurityTokenHandlerWrapper.ValidateToken(
                         authorizationBearerToken,
-                        tokenValidationParameters,
-                        out securityToken);
+                        tokenValidationParameters);
+
+                    isTokenValid = true;
                 }
                 catch (SecurityTokenSignatureKeyNotFoundException)
                 {
-                    // A SecurityTokenSignatureKeyNotFoundException is thrown if the signature key for
-                    // validating JWT tokens could not be found. This could happen if the issuer has
-                    // changed the signing keys since the last time they were retreived by the
+                    // A SecurityTokenSignatureKeyNotFoundException is thrown if the signing keys for
+                    // validating the JWT could not be found. This could happen if the issuer has
+                    // changed the signing keys since the last time they were retrieved by the
                     // ConfigurationManager. To handle this we ask the ConfigurationManger to refresh
-                    // which causes it to retreive the keys again, and then we retry the validation.
+                    // which causes it to retrieve the keys again the next time we ask for them.
+                    // Then we retry by asking for the signing keys and validating the token again.
                     // We only retry once.
 
                     _oidcConfigurationManager.RequestRefresh();
@@ -128,9 +126,11 @@ namespace OidcApiAuthorization
                         $"Authorization Failed. {ex.GetType()} caught while validating JWT token."
                         + $"Message: {ex.Message}");
                 }
-            } while (claimsPrincipal == null && validationRetryCount <= 1);
 
-            return new ApiAuthorizationResult(claimsPrincipal, securityToken);
+            } while (!isTokenValid && validationRetryCount <= 1);
+
+            // Success result.
+            return new ApiAuthorizationResult();
         }
     }
 }

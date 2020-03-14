@@ -4,30 +4,10 @@ using Microsoft.Extensions.Primitives;
 using OidcApiAuthorization;
 using Xunit;
 
-namespace AuthorizationHeaderBearerTokenParserTests
+namespace AuthorizationHeaderBearerTokenExtractorTests
 {
-    public class ParseTokenTests
+    public class GetTokenTests
     {
-        [Fact]
-        public void Returns_Bearer_token()
-        {
-            const string expectedToken = "some-token-value";
-
-            var httpRequestHeaders = new HeaderDictionary()
-            {
-                new KeyValuePair<string, StringValues>("header1", "header1value"),
-                new KeyValuePair<string, StringValues>("Authorization", $"Bearer {expectedToken}"),
-                new KeyValuePair<string, StringValues>("header3", "header3value")
-            };
-
-            var parser = new AuthorizationHeaderBearerTokenParser();
-
-            string token = parser.ParseToken(httpRequestHeaders);
-
-            Assert.NotNull(token);
-
-            Assert.Equal(expectedToken, token);
-        }
 
         [Fact]
         public void Doesnt_care_about_bEaRer_case()
@@ -41,30 +21,33 @@ namespace AuthorizationHeaderBearerTokenParserTests
                 new KeyValuePair<string, StringValues>("header3", "header3value")
             };
 
-            var parser = new AuthorizationHeaderBearerTokenParser();
+            var extractor = new AuthorizationHeaderBearerTokenExtractor();
 
-            string token = parser.ParseToken(httpRequestHeaders);
+            string token = extractor.GetToken(httpRequestHeaders);
 
             Assert.NotNull(token);
 
             Assert.Equal(expectedToken, token);
         }
 
-        [Fact]
-        public void Returns_null_if_Bearer_token_is_empty()
+        [Theory]
+        [InlineData("some-token-value")]
+        public void Returns_Bearer_token(string tokenValue)
         {
             var httpRequestHeaders = new HeaderDictionary()
             {
                 new KeyValuePair<string, StringValues>("header1", "header1value"),
-                new KeyValuePair<string, StringValues>("Authorization", "Bearer "),
+                new KeyValuePair<string, StringValues>("Authorization", $"Bearer {tokenValue}"),
                 new KeyValuePair<string, StringValues>("header3", "header3value")
             };
 
-            var parser = new AuthorizationHeaderBearerTokenParser();
+            var extractor = new AuthorizationHeaderBearerTokenExtractor();
 
-            string token = parser.ParseToken(httpRequestHeaders);
+            string token = extractor.GetToken(httpRequestHeaders);
 
-            Assert.Null(token);
+            Assert.NotNull(token);
+
+            Assert.Equal(tokenValue, token);
         }
 
         [Fact]
@@ -77,9 +60,9 @@ namespace AuthorizationHeaderBearerTokenParserTests
                 new KeyValuePair<string, StringValues>("header3", "header3value")
             };
 
-            var parser = new AuthorizationHeaderBearerTokenParser();
+            var extractor = new AuthorizationHeaderBearerTokenExtractor();
 
-            string token = parser.ParseToken(httpRequestHeaders);
+            string token = extractor.GetToken(httpRequestHeaders);
 
             Assert.Null(token);
         }
@@ -99,43 +82,31 @@ namespace AuthorizationHeaderBearerTokenParserTests
                 new KeyValuePair<string, StringValues>("header3", "header3value")
             };
 
-            var parser = new AuthorizationHeaderBearerTokenParser();
+            var extractor = new AuthorizationHeaderBearerTokenExtractor();
 
-            string token = parser.ParseToken(httpRequestHeaders);
-
-            Assert.Null(token);
-        }
-
-        [Fact]
-        public void Returns_null_if_not_Bearer_token()
-        {
-            var httpRequestHeaders = new HeaderDictionary()
-            {
-                new KeyValuePair<string, StringValues>("header1", "header1value"),
-                new KeyValuePair<string, StringValues>("Authorization", "notBearerHeader2value"),
-                new KeyValuePair<string, StringValues>("header3", "header3value")
-            };
-
-            var parser = new AuthorizationHeaderBearerTokenParser();
-
-            string token = parser.ParseToken(httpRequestHeaders);
+            string token = extractor.GetToken(httpRequestHeaders);
 
             Assert.Null(token);
         }
 
-        [Fact]
-        public void Returns_null_if_token_has_invalid_format()
+        [Theory]
+        [InlineData("Bearer tokenCanNot,HaveAComma")]
+        [InlineData("Bearer")]
+        [InlineData("Bearer ")]
+        [InlineData("tokenCanNot,HaveAComma")]
+        [InlineData("NotABearerToken")]
+        public void Returns_null_if_not_or_bad_Bearer_token(string invalidToken)
         {
             var httpRequestHeaders = new HeaderDictionary()
             {
                 new KeyValuePair<string, StringValues>("header1", "header1value"),
-                new KeyValuePair<string, StringValues>("Authorization", "tokenCanNot,HaveAComma"),
+                new KeyValuePair<string, StringValues>("Authorization", invalidToken),
                 new KeyValuePair<string, StringValues>("header3", "header3value")
             };
 
-            var parser = new AuthorizationHeaderBearerTokenParser();
+            var extractor = new AuthorizationHeaderBearerTokenExtractor();
 
-            string token = parser.ParseToken(httpRequestHeaders);
+            string token = extractor.GetToken(httpRequestHeaders);
 
             Assert.Null(token);
         }

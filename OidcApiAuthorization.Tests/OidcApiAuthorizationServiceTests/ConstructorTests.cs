@@ -25,7 +25,7 @@ namespace OidcApiAuthorizationServiceTests
             var ex = Assert.Throws<Exception>(() =>
                 new OidcApiAuthorizationService(
                     fakeApiAuthorizationSettingsOptions,
-                    authorizationHeaderBearerTokenParser: null, // Not accessed in this test.
+                    authorizationHeaderBearerTokenExractor: null, // Not accessed in this test.
                     jwtSecurityTokenHandlerWrapper: null, // Not accessed in this test.
                     oidcConfigurationManagerFactory: null) // Not accessed in this test.
             );
@@ -54,11 +54,6 @@ namespace OidcApiAuthorizationServiceTests
                     }
                 };
 
-            var fakeAuthorizationHeaderBearerTokenParser = new FakeAuthorizationHeaderBearerTokenParser()
-            {
-                ParsedTokenToReturn = null // No Authorization token was found.
-            };
-
             var fakeOidcConfigurationManagerFactory = new FakeOidcConfigurationManagerFactory()
             {
                 IOidcConfigurationManagerToReturn = null // Not  accessed in this test.
@@ -66,7 +61,7 @@ namespace OidcApiAuthorizationServiceTests
 
             var service = new OidcApiAuthorizationService(
                 fakeApiAuthorizationSettingsOptions,
-                authorizationHeaderBearerTokenParser: null, // Not accessed in this test.
+                authorizationHeaderBearerTokenExractor: null, // Not accessed in this test.
                 jwtSecurityTokenHandlerWrapper: null, // Not accessed in this test.
                 fakeOidcConfigurationManagerFactory);
 

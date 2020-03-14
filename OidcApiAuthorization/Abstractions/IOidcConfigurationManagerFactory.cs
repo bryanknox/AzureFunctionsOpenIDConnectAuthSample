@@ -3,7 +3,7 @@
     public interface IOidcConfigurationManagerFactory
     {
         /// <summary>
-        /// Construct a new IOidcConfigurationManager
+        /// Create a new IOidcConfigurationManager instance.
         /// </summary>
         /// <param name="issuerUrl">
         /// The URL of the Open ID Connect provider (issuer).
@@ -11,6 +11,6 @@
         /// <returns>
         /// The new IOidcConfigurationManager.
         /// </returns>
-        IOidcConfigurationManager New(string issuerUrl);
+        IOidcConfigurationManager Create(string issuerUrl);
     }
 }

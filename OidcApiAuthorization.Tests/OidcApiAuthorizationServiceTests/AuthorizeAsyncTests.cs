@@ -16,12 +16,9 @@ namespace OidcApiAuthorizationServiceTests
         [Fact]
         public async Task Retrys_once_if_SecurityTokenSignatureKeyNotFoundException()
         {
-            const string AudianceForTest = "audianceForTest";
+            const string AudianceForTest = "AudianceForTest";
             const string IssuerUrlForTest = "https://issuerUrl.for.test/";
-            const string ParsedTokenForTest = "parsedTokenForTest";
-
-            var claimsPrincipalForTest = new ClaimsPrincipal();
-            var securityTokenForTest = new FakeSecurityToken();
+            const string ExtractedTokenForTest = "ExtractedTokenForTest";
 
             var fakeApiAuthorizationSettingsOptions
                 = new FakeOptions<OidcApiAuthorizationSettings>()
@@ -33,16 +30,14 @@ namespace OidcApiAuthorizationServiceTests
                     }
                 };
 
-            var fakeAuthorizationHeaderBearerTokenParser = new FakeAuthorizationHeaderBearerTokenParser()
+            var fakeAuthorizationHeaderBearerTokenExractor = new FakeAuthorizationHeaderBearerTokenExractor()
             {
-                ParsedTokenToReturn = ParsedTokenForTest
+                TokenToReturn = ExtractedTokenForTest
             };
 
             var fakeJwtSecurityTokenHandlerWrapper = new FakeJwtSecurityTokenHandlerWrapper()
             {
-                ThrowFirstTime = true,
-                ClaimsPrincipalToReturn = claimsPrincipalForTest,
-                SecurityTokenToOutput = securityTokenForTest
+                ThrowFirstTime = true
             };
 
             var fakeOidcConfigurationManager = new FakeOidcConfigurationManager()
@@ -59,7 +54,7 @@ namespace OidcApiAuthorizationServiceTests
 
             var service = new OidcApiAuthorizationService(
                 fakeApiAuthorizationSettingsOptions,
-                fakeAuthorizationHeaderBearerTokenParser,
+                fakeAuthorizationHeaderBearerTokenExractor,
                 fakeJwtSecurityTokenHandlerWrapper,
                 fakeOidcConfigurationManagerFactory);
 
@@ -67,9 +62,6 @@ namespace OidcApiAuthorizationServiceTests
                 httpRequestHeaders);
 
             Assert.True(result.Success);
-
-            Assert.Equal(claimsPrincipalForTest, result.ClaimsPrincipal);
-            Assert.Equal(securityTokenForTest, result.SecurityToken);
 
             Assert.Equal(2, fakeJwtSecurityTokenHandlerWrapper.ValidateTokenCalledCount);
 
@@ -79,9 +71,9 @@ namespace OidcApiAuthorizationServiceTests
         [Fact]
         public async Task Returns_failure_for_unauthorized_token()
         {
-            const string AudianceForTest = "audianceForTest";
+            const string AudianceForTest = "AudianceForTest";
             const string IssuerUrlForTest = "https://issuerUrl.for.test/";
-            const string ParsedTokenForTest = "parsedTokenForTest";
+            const string ExtractedTokenForTest = "ExtractedTokenForTest";
 
             var fakeApiAuthorizationSettingsOptions
                 = new FakeOptions<OidcApiAuthorizationSettings>()
@@ -93,9 +85,9 @@ namespace OidcApiAuthorizationServiceTests
                     }
                 };
 
-            var fakeAuthorizationHeaderBearerTokenParser = new FakeAuthorizationHeaderBearerTokenParser()
+            var fakeAuthorizationHeaderBearerTokenExractor = new FakeAuthorizationHeaderBearerTokenExractor()
             {
-                ParsedTokenToReturn = ParsedTokenForTest
+                TokenToReturn = ExtractedTokenForTest
             };
 
             var fakeJwtSecurityTokenHandlerWrapper = new FakeJwtSecurityTokenHandlerWrapper()
@@ -118,7 +110,7 @@ namespace OidcApiAuthorizationServiceTests
 
             var service = new OidcApiAuthorizationService(
                 fakeApiAuthorizationSettingsOptions,
-                fakeAuthorizationHeaderBearerTokenParser,
+                fakeAuthorizationHeaderBearerTokenExractor,
                 fakeJwtSecurityTokenHandlerWrapper,
                 fakeOidcConfigurationManagerFactory);
 
@@ -148,9 +140,9 @@ namespace OidcApiAuthorizationServiceTests
                     }
                 };
 
-            var fakeAuthorizationHeaderBearerTokenParser = new FakeAuthorizationHeaderBearerTokenParser()
+            var fakeAuthorizationHeaderBearerTokenExractor = new FakeAuthorizationHeaderBearerTokenExractor()
             {
-                ParsedTokenToReturn = null // No Authorization token was found.
+                TokenToReturn = null // No Authorization token was found.
             };
 
             var fakeOidcConfigurationManagerFactory = new FakeOidcConfigurationManagerFactory()
@@ -162,7 +154,7 @@ namespace OidcApiAuthorizationServiceTests
 
             var service = new OidcApiAuthorizationService(
                 fakeApiAuthorizationSettingsOptions,
-                fakeAuthorizationHeaderBearerTokenParser,
+                fakeAuthorizationHeaderBearerTokenExractor,
                 jwtSecurityTokenHandlerWrapper: null, // Not accessed in this test.
                 fakeOidcConfigurationManagerFactory);
 
@@ -179,12 +171,10 @@ namespace OidcApiAuthorizationServiceTests
         [Fact]
         public async Task Returns_failure_if_cant_get_signing_keys_from_issuer()
         {
-            const string AudianceForTest = "audianceForTest";
+            const string AudianceForTest = "AudianceForTest";
             const string IssuerUrlForTest = "https://issuerUrl.for.test/";
-            const string ParsedTokenForTest = "parsedTokenForTest";
-            const string ExceptionMessageForTest = "exceptionMessageForTest";
-
-            var listLogger = new ListLoggerFixture();
+            const string ExtractedTokenForTest = "ExtractedTokenForTest";
+            const string ExceptionMessageForTest = "ExceptionMessageForTest";
 
             var fakeApiAuthorizationSettingsOptions
                 = new FakeOptions<OidcApiAuthorizationSettings>()
@@ -196,9 +186,9 @@ namespace OidcApiAuthorizationServiceTests
                     }
                 };
 
-            var fakeAuthorizationHeaderBearerTokenParser = new FakeAuthorizationHeaderBearerTokenParser()
+            var fakeAuthorizationHeaderBearerTokenExractor = new FakeAuthorizationHeaderBearerTokenExractor()
             {
-                ParsedTokenToReturn = ParsedTokenForTest
+                TokenToReturn = ExtractedTokenForTest
             };
 
             var fakeOidcConfigurationManagerFactory = new FakeOidcConfigurationManagerFactory()
@@ -213,7 +203,7 @@ namespace OidcApiAuthorizationServiceTests
 
             var service = new OidcApiAuthorizationService(
                 fakeApiAuthorizationSettingsOptions,
-                fakeAuthorizationHeaderBearerTokenParser,
+                fakeAuthorizationHeaderBearerTokenExractor,
                 jwtSecurityTokenHandlerWrapper: null, // Not accessed in this test.
                 fakeOidcConfigurationManagerFactory);
 
@@ -227,16 +217,12 @@ namespace OidcApiAuthorizationServiceTests
                 result.FailureReason);
         }
 
-
         [Fact]
         public async Task Returns_success_for_happy_path()
         {
-            const string AudianceForTest = "audianceForTest";
+            const string AudianceForTest = "AudianceForTest";
             const string IssuerUrlForTest = "https://issuerUrl.for.test/";
-            const string ParsedTokenForTest = "parsedTokenForTest";
-
-            var claimsPrincipalForTest = new ClaimsPrincipal();
-            var securityTokenForTest = new FakeSecurityToken();
+            const string ExtractedTokenForTest = "ExtractedTokenForTest";
 
             var fakeApiAuthorizationSettingsOptions
                 = new FakeOptions<OidcApiAuthorizationSettings>()
@@ -248,16 +234,12 @@ namespace OidcApiAuthorizationServiceTests
                     }
                 };
 
-            var fakeAuthorizationHeaderBearerTokenParser = new FakeAuthorizationHeaderBearerTokenParser()
+            var fakeAuthorizationHeaderBearerTokenExractor = new FakeAuthorizationHeaderBearerTokenExractor()
             {
-                ParsedTokenToReturn = ParsedTokenForTest
+                TokenToReturn = ExtractedTokenForTest
             };
 
-            var fakeJwtSecurityTokenHandlerWrapper = new FakeJwtSecurityTokenHandlerWrapper()
-            {
-                ClaimsPrincipalToReturn = claimsPrincipalForTest,
-                SecurityTokenToOutput = securityTokenForTest
-            };
+            var fakeJwtSecurityTokenHandlerWrapper = new FakeJwtSecurityTokenHandlerWrapper();
 
             var fakeOidcConfigurationManagerFactory = new FakeOidcConfigurationManagerFactory()
             {
@@ -271,7 +253,7 @@ namespace OidcApiAuthorizationServiceTests
 
             var service = new OidcApiAuthorizationService(
                 fakeApiAuthorizationSettingsOptions,
-                fakeAuthorizationHeaderBearerTokenParser,
+                fakeAuthorizationHeaderBearerTokenExractor,
                 fakeJwtSecurityTokenHandlerWrapper,
                 fakeOidcConfigurationManagerFactory);
 
@@ -279,9 +261,6 @@ namespace OidcApiAuthorizationServiceTests
                 httpRequestHeaders);
 
             Assert.True(result.Success);
-
-            Assert.Equal(claimsPrincipalForTest, result.ClaimsPrincipal);
-            Assert.Equal(securityTokenForTest, result.SecurityToken);
         }
     }
 }

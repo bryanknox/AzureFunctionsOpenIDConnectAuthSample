@@ -8,7 +8,7 @@ namespace OidcApiAuthorization.TestFixtures
 
         public string IssuerUrlReceived { get; set; }
 
-        public IOidcConfigurationManager New(string issuerUrl)
+        public IOidcConfigurationManager Create(string issuerUrl)
         {
             IssuerUrlReceived = issuerUrl;
 
