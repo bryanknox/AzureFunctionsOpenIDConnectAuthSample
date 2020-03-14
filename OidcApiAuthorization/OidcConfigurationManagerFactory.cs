@@ -13,7 +13,7 @@ namespace OidcApiAuthorization
         /// <returns>
         /// The new IOidcConfigurationManager.
         /// </returns>
-        public IOidcConfigurationManager New(string issuerUrl)
+        public IOidcConfigurationManager Create(string issuerUrl)
         {
             return new OidcConfigurationManager(issuerUrl);
         }

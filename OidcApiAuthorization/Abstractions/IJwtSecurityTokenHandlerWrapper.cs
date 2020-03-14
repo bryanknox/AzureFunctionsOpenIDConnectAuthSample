@@ -5,6 +5,6 @@ namespace OidcApiAuthorization.Abstractions
 {
     public interface IJwtSecurityTokenHandlerWrapper
     {
-        ClaimsPrincipal ValidateToken(string token, TokenValidationParameters tokenValidationParameters, out SecurityToken securityToken);
+        void ValidateToken(string token, TokenValidationParameters tokenValidationParameters);
     }
 }

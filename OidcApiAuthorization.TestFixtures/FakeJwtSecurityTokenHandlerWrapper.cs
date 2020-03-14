@@ -7,10 +7,6 @@ namespace OidcApiAuthorization.TestFixtures
 {
     public class FakeJwtSecurityTokenHandlerWrapper : IJwtSecurityTokenHandlerWrapper
     {
-        public ClaimsPrincipal ClaimsPrincipalToReturn { get; set; }
-
-        public SecurityToken SecurityTokenToOutput { get; set; }
-
         /// <summary>
         /// Indicates whether or not a SecurityTokenSignatureKeyNotFoundException
         /// should be thrown the first time that ValidateToken(..) is called.
@@ -23,10 +19,9 @@ namespace OidcApiAuthorization.TestFixtures
 
         // IJwtSecurityTokenHandlerWrapper members
 
-        public ClaimsPrincipal ValidateToken(
+        public void ValidateToken(
             string token,
-            TokenValidationParameters tokenValidationParameters,
-            out SecurityToken securityToken)
+            TokenValidationParameters tokenValidationParameters)
         {
             ++ValidateTokenCalledCount;
             if (ValidateTokenCalledCount == 1
@@ -39,10 +34,6 @@ namespace OidcApiAuthorization.TestFixtures
             {
                 throw ExceptionToThrow;
             }
-
-            securityToken = SecurityTokenToOutput;
-
-            return ClaimsPrincipalToReturn;
         }
     }
 }

@@ -52,9 +52,7 @@ namespace SampleFunctionApp.Tests
             var fakeApiAuthorization = new FakeApiAuthorizationService()
             {
                 // Setup to fake athuorization success.
-                ApiAuthorizationResultForTests = new ApiAuthorizationResult(
-                    new ClaimsPrincipal(),
-                    new FakeSecurityToken())
+                ApiAuthorizationResultForTests = new ApiAuthorizationResult()
             };
 
             string jsonBody = $"{{ \"name\": \"{ExpecetedName}\" }}";
@@ -81,44 +79,37 @@ namespace SampleFunctionApp.Tests
                 "C# HTTP trigger function rquest is authorized."));
         }
 
-        [Fact]
-        public async void No_name_returns_BadRequestObjectResult_with_help_text()
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("  ")] // Just a space character.
+        [InlineData("{}")]
+        [InlineData("{ \"name\": \"\" }")] // Empty string name value.
+        [InlineData("{ \"name\": \" \" }")] // Just a space for name value.
+        public async void No_name_returns_BadRequestObjectResult_with_help_text(string jsonBody)
         {
-            string[] testJsonBodies = new string[] { 
-                null, 
-                string.Empty, 
-                "  ", // Just a space character.
-                "{}",
-                "{ \"name\": \"\" }", // Empty string name value.
-                "{ \"name\": \" \" }" // Just a space for name value.
-            };
-            foreach (string jsonBody in testJsonBodies)
+            var fakeApiAuthorizationService = new FakeApiAuthorizationService()
             {
-                var fakeApiAuthorizationService = new FakeApiAuthorizationService()
-                {
-                    // Setup to fake athuorization success.
-                    ApiAuthorizationResultForTests = new ApiAuthorizationResult(
-                        new ClaimsPrincipal(),
-                        new FakeSecurityToken())
-                };
+                // Setup to fake athuorization success.
+                ApiAuthorizationResultForTests = new ApiAuthorizationResult()
+            };
 
-                HttpRequest httpRequest = HttpRequestFactoryFixture.CreateHttpPostRequest(
-                    jsonBody);
+            HttpRequest httpRequest = HttpRequestFactoryFixture.CreateHttpPostRequest(
+                jsonBody);
 
-                var listLogger = new ListLoggerFixture();
+            var listLogger = new ListLoggerFixture();
 
-                var func = new HelloFunction(fakeApiAuthorizationService);
+            var func = new HelloFunction(fakeApiAuthorizationService);
 
-                IActionResult actionResult = await func.Run(httpRequest, listLogger);
+            IActionResult actionResult = await func.Run(httpRequest, listLogger);
 
-                Assert.NotNull(actionResult);
+            Assert.NotNull(actionResult);
 
-                Assert.IsType<BadRequestObjectResult>(actionResult);
+            Assert.IsType<BadRequestObjectResult>(actionResult);
 
-                Assert.Equal("Please pass a name the request body.", ((BadRequestObjectResult)actionResult).Value);
+            Assert.Equal("Please pass a name the request body.", ((BadRequestObjectResult)actionResult).Value);
 
-                Assert.NotEmpty(listLogger.LogEntries);
-            }
+            Assert.NotEmpty(listLogger.LogEntries);
         }
 
     }

@@ -20,26 +20,24 @@ namespace OidcApiAuthorizationSettingsTest
             Assert.True(true);
         }
 
-        [Fact]
-        public void Throws_if_AuthorizationAudience_missing()
-        {
-            string[] missingValues = new string[] { null, string.Empty, "  " };
-            foreach (string missingValue in missingValues)
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("  ")] // Spaces.
+        public void Throws_if_AuthorizationAudience_missing(string audience)
+        { 
+            var settings = new OidcApiAuthorizationSettings()
             {
-                var settings = new OidcApiAuthorizationSettings()
-                {
-                    AuthorizationAudience = missingValue,
-                    AuthorizationIssuerUrl = "https://my.test.url/"
-                };
+                AuthorizationAudience = audience,
+                AuthorizationIssuerUrl = "https://my.test.url/"
+            };
 
-                var ex = Assert.Throws<Exception>(() => settings.ThrowIfMissingSettings());
+            var ex = Assert.Throws<Exception>(() => settings.ThrowIfMissingSettings());
 
-                Assert.Equal(
-                    $"Missing application setting. {nameof(OidcApiAuthorizationSettings.AuthorizationAudience)} setting is not set.",
-                    ex.Message);
-            }
+            Assert.Equal(
+                $"Missing application setting. {nameof(OidcApiAuthorizationSettings.AuthorizationAudience)} setting is not set.",
+                ex.Message);
         }
-
 
         [Fact]
         public void Throws_if_AuthorizationIssuerUrl_missing()

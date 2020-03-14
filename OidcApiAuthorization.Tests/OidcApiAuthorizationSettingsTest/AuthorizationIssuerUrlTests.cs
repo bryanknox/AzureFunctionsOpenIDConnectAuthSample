@@ -27,24 +27,19 @@ namespace OidcApiAuthorizationSettingsTest
             Assert.Null(settings.AuthorizationIssuerUrl);
         }
 
-        [Fact]
-        public void Doesnt_append_foward_slash()
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("  ")] // Spaces.
+        [InlineData("https://my.test.url/")]
+        public void Doesnt_append_foward_slash(string issuerUrl)
         {
-            string[] expectedValues = new string[] { 
-                null, 
-                string.Empty, 
-                "  ",
-                "https://my.test.url/"
-            };
-            foreach (string expectedValue in expectedValues)
+            var settings = new OidcApiAuthorizationSettings()
             {
-                var settings = new OidcApiAuthorizationSettings()
-                {
-                    AuthorizationIssuerUrl = expectedValue
-                };
+                AuthorizationIssuerUrl = issuerUrl
+            };
 
-                Assert.Equal(expectedValue, settings.AuthorizationIssuerUrl);
-            }
+            Assert.Equal(issuerUrl, settings.AuthorizationIssuerUrl);
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using OidcApiAuthorization.Abstractions;
 
@@ -7,19 +6,29 @@ namespace OidcApiAuthorization
 {
     public class JwtSecurityTokenHandlerWrapper : IJwtSecurityTokenHandlerWrapper
     {
-        public ClaimsPrincipal ValidateToken(
+        /// <summary>
+        /// Reads and validates a 'JSON Web Token' (JWT) and throws an exception if
+        /// the token could not be validated.
+        /// </summary>
+        /// <param name="token">
+        /// A JSON Web Token (JWT) encoded as a JWS or JWE in Compact Serialized Format.
+        /// </param>
+        /// <param name="tokenValidationParameters">
+        /// Contains parameters used in the validation of the token.
+        /// </param>
+        public void ValidateToken(
             string token,
-            TokenValidationParameters tokenValidationParameters,
-            out SecurityToken securityToken)
+            TokenValidationParameters tokenValidationParameters)
         {
             var handler = new JwtSecurityTokenHandler();
 
-            ClaimsPrincipal claimsPrincipal = handler.ValidateToken(
+            // Try to validate the token.
+            // Throws if the the token cannot be validated.
+            // We don't need the ClaimsPrincipal that is returned.
+            handler.ValidateToken(
                 token,
                 tokenValidationParameters,
-                out securityToken);
-
-            return claimsPrincipal;
+                out _); // Discard the output SecurityToken. We don't need it.
         }
     }
 }
