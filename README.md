@@ -1,7 +1,7 @@
 # AzureFunctionsOpenIDConnectAuthSample
-Sample Azure Functions app that shows the use of OpenID Connect (OIDC) to protect access to an HTTP triggered Azure Function. 
+A sample app that shows how to protect access to an API that is implemented as an HTTP triggered Azure Function and where the authorization server used supports OpenID Connect (OIDC) protocols.
 
-OIDC uses OAuth 2.0 JSON Web Tokens (JWT) (Bearer tokens) as part of the mechanism for API authorization security.
+Service providers that support compatible authorization servers include [Auth0](https://auth0.com/), [okta](https://okta.com/) and many others.
 
 # This Sample Uses:
 - C#
@@ -21,26 +21,27 @@ I implemented a sample serverless API as an HTTP triggered Azure Function and en
 What follows is my high-level description of the concepts and API-side implementation of the mechanisms used to protect an API implemented as an HTTP triggered Azure Function using the OAuth 2.0 Client Credentials Flow.
 
 Here's the breakdown of what follows:
-1. Some context, a high-level description of the OAuth 2.0 Client Credentials Flow.
-2. How to make a call to a protected API.
-3. How the code that protects the API is called within an HTTP triggered Azure Function.
-4. The implementation of the sample code that protects the API.
+1. Some context, a high-level description of the OIDC and OAuth 2.0 flows used.
+1. How to make a call to a protected API.
+1. How the code that protects the API is called within an HTTP triggered Azure Function.
+1. The implementation of the sample code that protects the API.
 
-# Context - OIDC and the OAuth 2.0 Client Credentials Flow
-The techniques used in the sample code for protecting the sample API can be used for other APIs, if they used in scenarios like following:
-	1. The client application uses an OpenID Connect (OIDC) authorization server.
-	2. The client application sends its Client ID and Client Secret to the authorization server.
-	3. The authorization server returns a JSON Web Token (JWT) containing an Access Token.
-	4. The client application includes that JWT in subsequent calls to the protected API.
+# Context - OIDC and OAuth 2.0 Flows Used
+The techniques used in the sample code can be used for protecting other HTTP triggered Azure Functions. If those the authorization server supports an OpenID Connect (OIDC) `/.well-known/openid-configuration` endpoint that the Azure Function will use to get the information it needs to authorize calls to the API.
+
+Before the client application makes calls to the protected API it will typically go through a flow similar to the following:
+1. The client application sends its Client ID and Client Secret to the authorization server.
+1. The authorization server returns a JSON Web Token (JWT) containing an Access Token.
+1. The client application includes that JWT in subsequent calls to the protected API as an `Authorization` header, where the value of that header is a Bearer token containing the JWT.
  
-The flow for calling protected APIs in that way is called the OAuth 2.0 Client Credentials Flow. Ssee [OAuth 2.0 RFC 6749, section 4.4 Client Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.4).
+That flow that the client applications used for calling protected APIs in that way is called the OAuth 2.0 Client Credentials Flow. See [OAuth 2.0 RFC 6749, section 4.4 Client Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.4).
 
-Its important to note that in the Client Credentials Flow access to the API is granted to the client application, not the user of the client application user.
+Its important to note that in the Client Credentials Flow access to the API is granted to the client application, not a user of the client application user.
 
-I won't be going into more details of how the OAuth 2.0 Client Credentials Flow works or is implemented within a client app. Instead I'll focus on describing the API side of how the call to the API is protected.
+I won't be going into more details of how the OAuth 2.0 Client Credentials Flow works or how it can be implemented within a client app. Instead I'll focus on describing the API-side of how the call to the Azure Function is protected.
 
 ## ODIC Authorization Server and Services
-There are many authentication and authorization services the support OpenID Connect (OIDC) to authenticate users, and the OAuth 2.0 Client Credentials Flow to grant API access to apps.  I've used [Auth0](https://auth0.com/) to host my authorization service in the development and testing of the sample API. However there is  no [Auth0](https://auth0.com/) specific dependencies or code in the sample. The sample code is based on the open web standards OpenID Connect (OIDC), OAuth 2.0 and JSON Web Tokens (JWT). The sample code should work with authorization providers that follow the same standards, hopefully with only changes to app settings.
+There are many authentication and authorization services the support OpenID Connect (OIDC) and the OAuth 2.0 Client Credentials Flow.  I've used [Auth0](https://auth0.com/) to host my authorization service in the development and testing of the sample API. However there is no [Auth0](https://auth0.com/) specific dependencies or code in the sample. The sample code is based on the open web standards OpenID Connect (OIDC), OAuth 2.0 and JSON Web Tokens (JWT). The sample code should work with authorization service providers that follow those standards, hopefully with only changes to app settings.
 
 # Calling a protected API
 
