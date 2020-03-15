@@ -33,15 +33,14 @@ The techniques used in the sample code for protecting the sample API can be used
 	3. The authorization server returns a JSON Web Token (JWT) containing an Access Token.
 	4. The client application includes that JWT in subsequent calls to the protected API.
  
-The flow for calling protected APIs in that way is called the OAuth 2.0 Client Credentials Flow (see [OAuth 2.0 RFC 6749, section 4.4 Client Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.4)).
+The flow for calling protected APIs in that way is called the OAuth 2.0 Client Credentials Flow. Ssee [OAuth 2.0 RFC 6749, section 4.4 Client Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.4).
 
 Its important to note that in the Client Credentials Flow access to the API is granted to the client application, not the user of the client application user.
 
 I won't be going into more details of how the OAuth 2.0 Client Credentials Flow works or is implemented within a client app. Instead I'll focus on describing the API side of how the call to the API is protected.
 
 ## ODIC Authorization Server and Services
-
-There are many authentication and authorization services the support OpenID Connect (OIDC) to authenticate users, and the OAuth 2.0 Client Credentials Flow to grant API access to apps.  I've used Auth0 in the development and testing of the sample API. However there is  no Auth0 specific dependencies or code in the sample. The sample code is based on the open web standards OpenID Connect (OIDC), OAuth 2.0 and JSON Web Tokens (JWT). The sample code should work with authorization providers that follow the same standards, hopefully with only changes to app settings.
+There are many authentication and authorization services the support OpenID Connect (OIDC) to authenticate users, and the OAuth 2.0 Client Credentials Flow to grant API access to apps.  I've used [Auth0](https://auth0.com/) to host my authorization service in the development and testing of the sample API. However there is  no [Auth0](https://auth0.com/) specific dependencies or code in the sample. The sample code is based on the open web standards OpenID Connect (OIDC), OAuth 2.0 and JSON Web Tokens (JWT). The sample code should work with authorization providers that follow the same standards, hopefully with only changes to app settings.
 
 # Calling a protected API
 
@@ -158,12 +157,12 @@ The ConfigurationManager also has a `RequestRefresh()` method that is called whe
 #### Reducing calls to the issuer
 The use of cached signing keys is very important because it reduces the number of calls to the issuer. Besides performance it still a good idea to minimize the calls to the issuer because most commercial authorization service providers will limit or throttle the number of calls  you can make to those configuration endpoints.
 
-Another mechanism we use to reduce calls to the issuer is to ensure that there is only one instance of `OidcApiAuthorizationService` for our Azure Function. We do this by registering it as a singleton in the function app's dependency injection configuration.  See `ServicesConfigurationExtensions.AddOidcApiAuthorization()`.  Also see the Microsoft Docs: Use dependency injection in .NET Azure Functions.
+Another mechanism we use to reduce calls to the issuer is to ensure that there is only one instance of `OidcApiAuthorizationService` for our Azure Function. We do this by registering it as a singleton in the function app's dependency injection configuration.  See `ServicesConfigurationExtensions.AddOidcApiAuthorization()`.  Also see the Microsoft Docs: [Use dependency injection in .NET Azure Functions](https://docs.microsoft.com/en-us/azure/azure-functions/functions-dotnet-dependency-injection).
 
 #### Configuring the ConfigurationManager
 The ConfigurationManager needs to be configured and we want to get the setting it needs from the function app's app settings.
 
-We configure the function app's dependency injection so that we can use the Options Pattern for App Settings.  Then we inject the settings we need into the `OidcApiAuthorizationService` constructor. That constructor passes the issuer URL setting to the `OidcConfigurationManagerFactory` which creates  ConfigurationManager object that is used.
+We configure the function app's dependency injection so that we can use the [Options Pattern for App Settings](https://docs.microsoft.com/en-us/azure/azure-functions/functions-dotnet-dependency-injection#working-with-options-and-settings).  Then we inject the settings we need into the `OidcApiAuthorizationService` constructor. That constructor passes the issuer URL setting to the `OidcConfigurationManagerFactory` which creates  ConfigurationManager object that is used.
 
 ### Validate the Access Token using the issuer's signing keys
 The validation of the access token using the issuer's signing keys is handled by the `JwtSecurityTokenHandlerWrapper` class. That class is just a very thin wrapper around an instance of class `JwtSecurityTokenHandler` from the  `System.IdentityModel.Tokens.Jwt` namespace.
