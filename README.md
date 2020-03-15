@@ -117,19 +117,19 @@ The sample code uses dependency injection, so an object that implements the `IAp
 # Overview of the Sample Code Projects
 The sample code is composed of a Visual Studio solution with multiple projects.
 
-With all those projects and files it might look complex, but the pieces are each petty simple and easy to understand.
+With all the projects and files the code might seem complex but each piece is pretty simple and easy to understand.
 
-SampleFunctionApp - is where you'll find the HTTP triggered Azure Function.
+**SampleFunctionApp** - is where you'll find the sample HTTP triggered Azure Function.
 
-SampleFunctionApp.Tests - Is where you'll find some unit tests for that Azure Function.
+**SampleFunctionApp.Tests** - is where you'll find the unit tests for the sample Azure Function.
 
-TestFixtures.AzureFunctions - is a class library with some test fixtures that make implementing the unit tests easier.
+**TestFixtures.AzureFunctions** - is a class library with some test fixtures that make implementing the unit tests easier.
 
-OidcApiAuthorization - is the class library for the code that protects APIs. `OidcApiAuthorizationService` is the top-level class. It uses the other code that library which is broken down into multiple interfaces and classes so its easier to unit test. The number of files may make it seem complex, but each piece should be easy to understand and hopefully its pretty easy to see how they fit together.
+**OidcApiAuthorization** - is the class library for the code that protects APIs. `OidcApiAuthorizationService` is the top-level class. It uses the other code that library which is broken down into multiple interfaces and classes so its easier to unit test. The number of files may make it seem complex, but each piece should be easy to understand and hopefully its pretty easy to see how they fit together.
 
-OidcApiAuthorization.TestFixtures - is a class library of test fixtures that make unit testing the class in the OidcApiAuthorization library.
+**OidcApiAuthorization.TestFixtures** - is a class library of test fixtures that make unit testing the class in the OidcApiAuthorization library.
 
-OidcApiAuthorization.Tests - contains the unit tests for the OidcApiAuthorization library.
+**OidcApiAuthorization.Tests** - contains the unit tests for the OidcApiAuthorization library.
 
 # OidcApiAuthorizationService class
 This is the top-level class used to protect HTTP triggered Azure Function APIs.
