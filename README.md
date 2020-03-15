@@ -16,7 +16,7 @@ Service providers that support compatible authorization servers include [Auth0](
 - CI using GitHub Actions
 
 # Introduction
-I implemented a sample serverless API as an HTTP triggered Azure Function and enhanced it to work within an OAuth 2.0 Client Credentials Flow to ensure that only authorized apps that use OpenID Connect (OIDC) can access that API.
+I implemented a sample serverless API as an HTTP triggered Azure Function that is protected to ensure that only authorized apps can access that API. The sample Azure Function works when used with an authorization server that supports OpenID Connect (OIDC) and OAuth 2.0 protocols.
 
 What follows is my high-level description of the concepts and API-side implementation of the mechanisms used to protect an API implemented as an HTTP triggered Azure Function using the OAuth 2.0 Client Credentials Flow.
 
