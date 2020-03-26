@@ -45,18 +45,13 @@ namespace OidcApiAuthorizationServiceTests
                 SecurityKeysForTest = new List<SecurityKey>()
             };
 
-            var fakeOidcConfigurationManagerFactory = new FakeOidcConfigurationManagerFactory()
-            {
-                IOidcConfigurationManagerToReturn = fakeOidcConfigurationManager
-            };
-
             IHeaderDictionary httpRequestHeaders = null;
 
             var service = new OidcApiAuthorizationService(
                 fakeApiAuthorizationSettingsOptions,
                 fakeAuthorizationHeaderBearerTokenExractor,
                 fakeJwtSecurityTokenHandlerWrapper,
-                fakeOidcConfigurationManagerFactory);
+                fakeOidcConfigurationManager);
 
             ApiAuthorizationResult result = await service.AuthorizeAsync(
                 httpRequestHeaders);
@@ -101,18 +96,13 @@ namespace OidcApiAuthorizationServiceTests
                 SecurityKeysForTest = new List<SecurityKey>()
             };
 
-            var fakeOidcConfigurationManagerFactory = new FakeOidcConfigurationManagerFactory()
-            {
-                IOidcConfigurationManagerToReturn = fakeOidcConfigurationManager
-            };
-
             IHeaderDictionary httpRequestHeaders = null;
 
             var service = new OidcApiAuthorizationService(
                 fakeApiAuthorizationSettingsOptions,
                 fakeAuthorizationHeaderBearerTokenExractor,
                 fakeJwtSecurityTokenHandlerWrapper,
-                fakeOidcConfigurationManagerFactory);
+                fakeOidcConfigurationManager);
 
             ApiAuthorizationResult result = await service.AuthorizeAsync(
                 httpRequestHeaders);
@@ -145,21 +135,14 @@ namespace OidcApiAuthorizationServiceTests
                 TokenToReturn = null // No Authorization token was found.
             };
 
-            var fakeOidcConfigurationManagerFactory = new FakeOidcConfigurationManagerFactory()
-            {
-                IOidcConfigurationManagerToReturn = null // Not  accessed in this test.
-            };
-
-            IHeaderDictionary httpRequestHeaders = null;
-
             var service = new OidcApiAuthorizationService(
                 fakeApiAuthorizationSettingsOptions,
                 fakeAuthorizationHeaderBearerTokenExractor,
                 jwtSecurityTokenHandlerWrapper: null, // Not accessed in this test.
-                fakeOidcConfigurationManagerFactory);
+                oidcConfigurationManager: null); // Not accessed in this test.
 
             ApiAuthorizationResult result = await service.AuthorizeAsync(
-                httpRequestHeaders);
+                httpRequestHeaders: null);
 
             Assert.True(result.Failed);
             
@@ -191,12 +174,9 @@ namespace OidcApiAuthorizationServiceTests
                 TokenToReturn = ExtractedTokenForTest
             };
 
-            var fakeOidcConfigurationManagerFactory = new FakeOidcConfigurationManagerFactory()
+            var fakeOidcConfigurationManager = new FakeOidcConfigurationManager()
             {
-                IOidcConfigurationManagerToReturn = new FakeOidcConfigurationManager()
-                {
-                    ExceptionMessageForTest = ExceptionMessageForTest,
-                }
+                ExceptionMessageForTest = ExceptionMessageForTest,
             };
 
             IHeaderDictionary httpRequestHeaders = null;
@@ -205,7 +185,7 @@ namespace OidcApiAuthorizationServiceTests
                 fakeApiAuthorizationSettingsOptions,
                 fakeAuthorizationHeaderBearerTokenExractor,
                 jwtSecurityTokenHandlerWrapper: null, // Not accessed in this test.
-                fakeOidcConfigurationManagerFactory);
+                fakeOidcConfigurationManager);
 
             ApiAuthorizationResult result = await service.AuthorizeAsync(
                 httpRequestHeaders);
@@ -241,12 +221,9 @@ namespace OidcApiAuthorizationServiceTests
 
             var fakeJwtSecurityTokenHandlerWrapper = new FakeJwtSecurityTokenHandlerWrapper();
 
-            var fakeOidcConfigurationManagerFactory = new FakeOidcConfigurationManagerFactory()
+            var fakeOidcConfigurationManager = new FakeOidcConfigurationManager()
             {
-                IOidcConfigurationManagerToReturn = new FakeOidcConfigurationManager()
-                {
-                    SecurityKeysForTest = new List<SecurityKey>()
-                }
+                SecurityKeysForTest = new List<SecurityKey>()
             };
 
             IHeaderDictionary httpRequestHeaders = null;
@@ -255,7 +232,7 @@ namespace OidcApiAuthorizationServiceTests
                 fakeApiAuthorizationSettingsOptions,
                 fakeAuthorizationHeaderBearerTokenExractor,
                 fakeJwtSecurityTokenHandlerWrapper,
-                fakeOidcConfigurationManagerFactory);
+                fakeOidcConfigurationManager);
 
             ApiAuthorizationResult result = await service.AuthorizeAsync(
                 httpRequestHeaders);

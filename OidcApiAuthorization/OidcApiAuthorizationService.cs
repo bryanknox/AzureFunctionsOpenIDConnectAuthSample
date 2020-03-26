@@ -26,7 +26,7 @@ namespace OidcApiAuthorization
             IOptions<OidcApiAuthorizationSettings> apiAuthorizationSettingsOptions,
             IAuthorizationHeaderBearerTokenExtractor authorizationHeaderBearerTokenExractor,
             IJwtSecurityTokenHandlerWrapper jwtSecurityTokenHandlerWrapper,
-            IOidcConfigurationManagerFactory oidcConfigurationManagerFactory)
+            IOidcConfigurationManager oidcConfigurationManager)
         {
             apiAuthorizationSettingsOptions.Value.ThrowIfMissingSettings();
 
@@ -37,7 +37,7 @@ namespace OidcApiAuthorization
 
             _jwtSecurityTokenHandlerWrapper = jwtSecurityTokenHandlerWrapper;
 
-            _oidcConfigurationManager = oidcConfigurationManagerFactory.Create(_issuerUrl);
+            _oidcConfigurationManager = oidcConfigurationManager;
         }
 
         /// <summary>

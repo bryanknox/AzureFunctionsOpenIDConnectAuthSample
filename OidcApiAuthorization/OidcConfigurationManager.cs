@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
@@ -16,17 +17,19 @@ namespace OidcApiAuthorization
         /// Construct a ConfigurationManager instance for retreiving and caching OpenIdConnectConfiguration
         /// from an Open ID Connect provider (issuer)
         /// </summary>
-        /// <param name="issuerUrl">
-        /// The URL of the Open ID Connect provider (issuer).
-        /// Must end with a '/'.
-        /// </param>
-        public OidcConfigurationManager(string issuerUrl)
+        public OidcConfigurationManager(
+            IOptions<OidcApiAuthorizationSettings> settingsOptions)
         {
-            var documentRetriever = new HttpDocumentRetriever { RequireHttps = issuerUrl.StartsWith("https://") };
+            string issuerUrl = settingsOptions.Value.AuthorizationIssuerUrl;
+
+            var documentRetriever = new HttpDocumentRetriever 
+            { 
+                RequireHttps = issuerUrl.StartsWith("https://") 
+            };
 
             // Setup the ConfigurationManager to call the issuer (i.e. Auth0) of the signing keys.
-            // The ConfigurationManager caches the configuration it receives from the OpenID Connect provider (issuer)
-            // in order to reduce the number or requests to that provider.
+            // The ConfigurationManager caches the configuration it receives from the OpenID Connect
+            // provider (issuer) in order to reduce the number or requests to that provider.
             //
             // The configuration is not retrieved from the OpenID Connect provider until the first time
             // the ConfigurationManager.GetConfigurationAsync() is called below.
