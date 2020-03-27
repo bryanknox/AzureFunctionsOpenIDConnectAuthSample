@@ -1,7 +1,6 @@
 ﻿using System;
 using OidcApiAuthorization;
 using OidcApiAuthorization.TestFixtures;
-using TestFixtures.AzureFunctions;
 using Xunit;
 
 namespace OidcApiAuthorizationServiceTests
@@ -27,46 +26,13 @@ namespace OidcApiAuthorizationServiceTests
                     fakeApiAuthorizationSettingsOptions,
                     authorizationHeaderBearerTokenExractor: null, // Not accessed in this test.
                     jwtSecurityTokenHandlerWrapper: null, // Not accessed in this test.
-                    oidcConfigurationManagerFactory: null) // Not accessed in this test.
+                    oidcConfigurationManager: null) // Not accessed in this test.
             );
 
             // Check that the exception thrown is the one we're lookging for.
             // We are NOT trying to enforce a requirement on the particular
             // message text.
             Assert.StartsWith("Missing application setting.",  ex.Message);
-        }
-
-        [Fact]
-        public void Uses_configuration_manager_factory()
-        {
-            const string audianceForTest = "audianceForTest";
-            const string issuerUrlForTest = "https://issuerUrl.for.test/";
-
-            var listLogger = new ListLoggerFixture();
-
-            var fakeApiAuthorizationSettingsOptions
-                = new FakeOptions<OidcApiAuthorizationSettings>()
-                {
-                    Value = new OidcApiAuthorizationSettings()
-                    {
-                        AuthorizationAudience = audianceForTest,
-                        AuthorizationIssuerUrl = issuerUrlForTest
-                    }
-                };
-
-            var fakeOidcConfigurationManagerFactory = new FakeOidcConfigurationManagerFactory()
-            {
-                IOidcConfigurationManagerToReturn = null // Not  accessed in this test.
-            };
-
-            var service = new OidcApiAuthorizationService(
-                fakeApiAuthorizationSettingsOptions,
-                authorizationHeaderBearerTokenExractor: null, // Not accessed in this test.
-                jwtSecurityTokenHandlerWrapper: null, // Not accessed in this test.
-                fakeOidcConfigurationManagerFactory);
-
-            // Test that the issuer URL was sent to the Oidc Configuration Manager Factory.
-            Assert.Equal(issuerUrlForTest, fakeOidcConfigurationManagerFactory.IssuerUrlReceived);
         }
     }
 }
