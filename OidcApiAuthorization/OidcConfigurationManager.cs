@@ -20,7 +20,7 @@ namespace OidcApiAuthorization
         public OidcConfigurationManager(
             IOptions<OidcApiAuthorizationSettings> settingsOptions)
         {
-            string issuerUrl = settingsOptions.Value.AuthorizationIssuerUrl;
+            string issuerUrl = settingsOptions.Value.IssuerUrl;
 
             var documentRetriever = new HttpDocumentRetriever 
             { 

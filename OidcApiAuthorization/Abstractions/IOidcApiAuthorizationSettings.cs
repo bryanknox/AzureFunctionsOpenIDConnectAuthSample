@@ -2,8 +2,8 @@
 {
     public interface IOidcApiAuthorizationSettings
     {
-        string AuthorizationAudience { get; }
+        string Audience { get; }
 
-        string AuthorizationIssuerUrl { get; }
+        string IssuerUrl { get; }
     }
 }

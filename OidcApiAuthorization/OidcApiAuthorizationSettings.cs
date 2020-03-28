@@ -18,10 +18,10 @@ namespace OidcApiAuthorization
         /// the API (HTTP triggered Azure Function) being protected. This is often a URL but
         /// it is not used as a URL is is simply used as an identifier.
         /// 
-        /// For Auth0 the AuthorizationAudience setting set here should match the API's Identifier
+        /// For Auth0 the Audience setting set here should match the API's Identifier
         /// in the Auth0 Dashboard.
         /// </remarks>
-        public string AuthorizationAudience { get; set; }
+        public string Audience { get; set; }
 
         /// <summary>
         /// The URL of the Open ID Connect provider (issuer) that will perform API authorization.
@@ -33,7 +33,7 @@ namespace OidcApiAuthorization
         /// 
         /// For Auth0 the URL format is:  https://{Auth0-tenant-domain}.auth0.com 
         /// </remarks>
-        public string AuthorizationIssuerUrl {
+        public string IssuerUrl {
             get
             {
                 return _issuerUrl;
@@ -48,21 +48,6 @@ namespace OidcApiAuthorization
                 {
                     _issuerUrl = value;
                 }
-            }
-        }
-
-        /// <summary>
-        /// Throws an Exception if any of the setting properties have not been set.
-        /// </summary>
-        public void ThrowIfMissingSettings()
-        {
-            if (string.IsNullOrWhiteSpace(AuthorizationAudience))
-            {
-                throw new Exception($"Missing application setting. {nameof(OidcApiAuthorizationSettings.AuthorizationAudience)} setting is not set.");
-            }
-            if (string.IsNullOrWhiteSpace(AuthorizationIssuerUrl))
-            {
-                throw new Exception($"Missing application setting. {nameof(OidcApiAuthorizationSettings.AuthorizationIssuerUrl)} setting is not set.");
             }
         }
     }

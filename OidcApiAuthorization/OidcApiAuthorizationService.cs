@@ -28,10 +28,8 @@ namespace OidcApiAuthorization
             IJwtSecurityTokenHandlerWrapper jwtSecurityTokenHandlerWrapper,
             IOidcConfigurationManager oidcConfigurationManager)
         {
-            apiAuthorizationSettingsOptions.Value.ThrowIfMissingSettings();
-
-            _issuerUrl = apiAuthorizationSettingsOptions.Value.AuthorizationIssuerUrl;
-            _audience = apiAuthorizationSettingsOptions.Value.AuthorizationAudience;
+            _issuerUrl = apiAuthorizationSettingsOptions.Value.IssuerUrl;
+            _audience = apiAuthorizationSettingsOptions.Value.Audience;
 
             _authorizationHeaderBearerTokenExractor = authorizationHeaderBearerTokenExractor;
 

@@ -25,8 +25,8 @@ namespace OidcApiAuthorizationServiceTests
                 {
                     Value = new OidcApiAuthorizationSettings()
                     {
-                        AuthorizationAudience = AudianceForTest,
-                        AuthorizationIssuerUrl = IssuerUrlForTest
+                        Audience = AudianceForTest,
+                        IssuerUrl = IssuerUrlForTest
                     }
                 };
 
@@ -75,8 +75,8 @@ namespace OidcApiAuthorizationServiceTests
                 {
                     Value = new OidcApiAuthorizationSettings()
                     {
-                        AuthorizationAudience = AudianceForTest,
-                        AuthorizationIssuerUrl = IssuerUrlForTest
+                        Audience = AudianceForTest,
+                        IssuerUrl = IssuerUrlForTest
                     }
                 };
 
@@ -125,8 +125,8 @@ namespace OidcApiAuthorizationServiceTests
                 {
                     Value = new OidcApiAuthorizationSettings()
                     {
-                        AuthorizationAudience = AudianceForTest,
-                        AuthorizationIssuerUrl = IssuerUrlForTest
+                        Audience = AudianceForTest,
+                        IssuerUrl = IssuerUrlForTest
                     }
                 };
 
@@ -164,8 +164,8 @@ namespace OidcApiAuthorizationServiceTests
                 {
                     Value = new OidcApiAuthorizationSettings()
                     {
-                        AuthorizationAudience = AudianceForTest,
-                        AuthorizationIssuerUrl = IssuerUrlForTest
+                        Audience = AudianceForTest,
+                        IssuerUrl = IssuerUrlForTest
                     }
                 };
 
@@ -209,8 +209,8 @@ namespace OidcApiAuthorizationServiceTests
                 {
                     Value = new OidcApiAuthorizationSettings()
                     {
-                        AuthorizationAudience = AudianceForTest,
-                        AuthorizationIssuerUrl = IssuerUrlForTest
+                        Audience = AudianceForTest,
+                        IssuerUrl = IssuerUrlForTest
                     }
                 };
 
