@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using OidcApiAuthorization;
-using OidcApiAuthorization.Abstractions;
+using OidcApiAuthorization.Models;
 using OidcApiAuthorization.TestFixtures;
-using TestFixtures.AzureFunctions;
 using Xunit;
 
 namespace OidcApiAuthorizationServiceTests
@@ -25,8 +23,8 @@ namespace OidcApiAuthorizationServiceTests
                 {
                     Value = new OidcApiAuthorizationSettings()
                     {
-                        AuthorizationAudience = AudianceForTest,
-                        AuthorizationIssuerUrl = IssuerUrlForTest
+                        Audience = AudianceForTest,
+                        IssuerUrl = IssuerUrlForTest
                     }
                 };
 
@@ -75,8 +73,8 @@ namespace OidcApiAuthorizationServiceTests
                 {
                     Value = new OidcApiAuthorizationSettings()
                     {
-                        AuthorizationAudience = AudianceForTest,
-                        AuthorizationIssuerUrl = IssuerUrlForTest
+                        Audience = AudianceForTest,
+                        IssuerUrl = IssuerUrlForTest
                     }
                 };
 
@@ -125,8 +123,8 @@ namespace OidcApiAuthorizationServiceTests
                 {
                     Value = new OidcApiAuthorizationSettings()
                     {
-                        AuthorizationAudience = AudianceForTest,
-                        AuthorizationIssuerUrl = IssuerUrlForTest
+                        Audience = AudianceForTest,
+                        IssuerUrl = IssuerUrlForTest
                     }
                 };
 
@@ -164,8 +162,8 @@ namespace OidcApiAuthorizationServiceTests
                 {
                     Value = new OidcApiAuthorizationSettings()
                     {
-                        AuthorizationAudience = AudianceForTest,
-                        AuthorizationIssuerUrl = IssuerUrlForTest
+                        Audience = AudianceForTest,
+                        IssuerUrl = IssuerUrlForTest
                     }
                 };
 
@@ -209,8 +207,8 @@ namespace OidcApiAuthorizationServiceTests
                 {
                     Value = new OidcApiAuthorizationSettings()
                     {
-                        AuthorizationAudience = AudianceForTest,
-                        AuthorizationIssuerUrl = IssuerUrlForTest
+                        Audience = AudianceForTest,
+                        IssuerUrl = IssuerUrlForTest
                     }
                 };
 

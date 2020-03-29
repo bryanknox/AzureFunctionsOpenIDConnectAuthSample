@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using OidcApiAuthorization.Abstractions;
+using OidcApiAuthorization.Models;
 
 namespace OidcApiAuthorization.TestFixtures
 {
@@ -8,14 +9,19 @@ namespace OidcApiAuthorization.TestFixtures
     {
         public ApiAuthorizationResult ApiAuthorizationResultForTests { get; set; }
 
+        public string BadHealthMessageForTests { get; set; }
+
         // IApiAuthorization members.
 
         public async Task<ApiAuthorizationResult> AuthorizeAsync(IHeaderDictionary httpRequestHeaders)
         {
-            // Prevent compiler Warning CS1998 "This async method lacks 'await' operators and ..."
-            await Task.FromResult(0);
+            return await Task.FromResult(ApiAuthorizationResultForTests);
+        }
 
-            return ApiAuthorizationResultForTests;
+        public async Task<HealthCheckResult> HealthCheckAsync()
+        {
+            return await Task.FromResult(
+                new HealthCheckResult(BadHealthMessageForTests));
         }
     }
 }

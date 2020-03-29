@@ -12,12 +12,12 @@ namespace AuthorizationHeaderBearerTokenExtractorTests
         [Fact]
         public void Doesnt_care_about_bEaRer_case()
         {
-            const string expectedToken = "some-token-value";
+            const string ExpectedToken = "some-token-value";
 
             var httpRequestHeaders = new HeaderDictionary()
             {
                 new KeyValuePair<string, StringValues>("header1", "header1value"),
-                new KeyValuePair<string, StringValues>("Authorization", $"bEaRer {expectedToken}"),
+                new KeyValuePair<string, StringValues>("Authorization", $"bEaRer {ExpectedToken}"),
                 new KeyValuePair<string, StringValues>("header3", "header3value")
             };
 
@@ -27,7 +27,7 @@ namespace AuthorizationHeaderBearerTokenExtractorTests
 
             Assert.NotNull(token);
 
-            Assert.Equal(expectedToken, token);
+            Assert.Equal(ExpectedToken, token);
         }
 
         [Theory]

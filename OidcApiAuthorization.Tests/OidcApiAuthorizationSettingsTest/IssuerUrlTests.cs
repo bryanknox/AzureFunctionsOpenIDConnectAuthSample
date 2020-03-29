@@ -3,20 +3,20 @@ using Xunit;
 
 namespace OidcApiAuthorizationSettingsTest
 {
-    public class AuthorizationIssuerUrlTests
+    public class IssuerUrlTests
     {
         [Fact]
         public void Appends_missing_foward_slash()
         {
-            const string withoutEndingSlash = "https://my.test.url";
-            const string withEndingSlash = "https://my.test.url/";
+            const string WithoutEndingSlash = "https://my.test.url";
+            const string WithEndingSlash = "https://my.test.url/";
 
             var settings = new OidcApiAuthorizationSettings()
             {
-                AuthorizationIssuerUrl = withoutEndingSlash
+                IssuerUrl = WithoutEndingSlash
             };
 
-            Assert.Equal(withEndingSlash, settings.AuthorizationIssuerUrl);
+            Assert.Equal(WithEndingSlash, settings.IssuerUrl);
         }
 
         [Fact]
@@ -24,7 +24,7 @@ namespace OidcApiAuthorizationSettingsTest
         {
             var settings = new OidcApiAuthorizationSettings();
 
-            Assert.Null(settings.AuthorizationIssuerUrl);
+            Assert.Null(settings.IssuerUrl);
         }
 
         [Theory]
@@ -36,10 +36,10 @@ namespace OidcApiAuthorizationSettingsTest
         {
             var settings = new OidcApiAuthorizationSettings()
             {
-                AuthorizationIssuerUrl = issuerUrl
+                IssuerUrl = issuerUrl
             };
 
-            Assert.Equal(issuerUrl, settings.AuthorizationIssuerUrl);
+            Assert.Equal(issuerUrl, settings.IssuerUrl);
         }
     }
 }

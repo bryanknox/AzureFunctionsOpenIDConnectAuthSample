@@ -18,6 +18,11 @@ namespace TestFixtures.AzureFunctions
             return qs;
         }
 
+        public static DefaultHttpRequest CreateHttpGetRequest()
+        {
+            return new DefaultHttpRequest(new DefaultHttpContext());
+        }
+
         public static DefaultHttpRequest CreateHttpGetRequest(string queryStringKey, string queryStringValue)
         {
             var request = new DefaultHttpRequest(new DefaultHttpContext())

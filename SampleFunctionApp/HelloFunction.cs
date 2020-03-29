@@ -7,6 +7,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using OidcApiAuthorization.Abstractions;
+using OidcApiAuthorization.Models;
 
 namespace SampleFunctionApp
 {
@@ -24,7 +25,7 @@ namespace SampleFunctionApp
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-            log.LogWarning("C# HTTP trigger function received a request.");
+            log.LogWarning($"HTTP trigger function {nameof(HelloFunction)} received a request.");
 
             ApiAuthorizationResult authorizationResult = await _apiAuthorization.AuthorizeAsync(req.Headers);
             if (authorizationResult.Failed)
@@ -32,7 +33,7 @@ namespace SampleFunctionApp
                 log.LogWarning(authorizationResult.FailureReason);
                 return new UnauthorizedResult();
             }
-            log.LogWarning("C# HTTP trigger function rquest is authorized.");
+            log.LogWarning($"HTTP trigger function {nameof(HelloFunction)} rquest is authorized.");
 
             // Get name from request body.
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
