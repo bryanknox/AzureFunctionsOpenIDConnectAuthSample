@@ -1,12 +1,9 @@
-﻿using System;
-using OidcApiAuthorization.Abstractions;
-
-namespace OidcApiAuthorization
+﻿namespace OidcApiAuthorization
 {
     /// <summary>
     /// Encapsulates settings used in OpenID Connect (OIDC) API authorization.
     /// </summary>
-    public class OidcApiAuthorizationSettings : IOidcApiAuthorizationSettings
+    public class OidcApiAuthorizationSettings
     {
         private string _issuerUrl;
 

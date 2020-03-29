@@ -1,8 +1,7 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using OidcApiAuthorization.Abstractions;
+using OidcApiAuthorization.Models;
 using OidcApiAuthorization.TestFixtures;
 using TestFixtures.AzureFunctions;
 using Xunit;
@@ -76,7 +75,7 @@ namespace SampleFunctionApp.Tests
 
             Assert.True(listLogger.HasLogEntryMessageContaining(
                 LogLevel.Warning,
-                "C# HTTP trigger function rquest is authorized."));
+                $"HTTP trigger function {nameof(HelloFunction)} rquest is authorized."));
         }
 
         [Theory]

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using OidcApiAuthorization.Abstractions;
@@ -11,23 +10,23 @@ namespace OidcApiAuthorization.TestFixtures
     {
         public string ExceptionMessageForTest { get; set; }
 
+        public int GetIssuerSigningKeysAsyncCalledCount { get; set; }
+
         public int RequestRefreshCalledCount { get; set; }
 
         public IEnumerable<SecurityKey> SecurityKeysForTest { get; set; }
-
 
         // IOidcConfigurationManager members
 
         public async Task<IEnumerable<SecurityKey>> GetIssuerSigningKeysAsync()
         {
-            // Prevent compiler Warning CS1998 "This async method lacks 'await' operators and ..."
-            await Task.FromResult(0);
+            ++GetIssuerSigningKeysAsyncCalledCount;
 
             if (ExceptionMessageForTest != null)
             {
                 throw new TestException(ExceptionMessageForTest);
             }
-            return SecurityKeysForTest;
+            return await Task.FromResult(SecurityKeysForTest);
         }
 
         public void RequestRefresh()

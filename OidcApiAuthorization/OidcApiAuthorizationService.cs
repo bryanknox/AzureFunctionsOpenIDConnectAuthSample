@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using OidcApiAuthorization.Abstractions;
+using OidcApiAuthorization.Models;
 
 namespace OidcApiAuthorization
 {
@@ -28,8 +29,8 @@ namespace OidcApiAuthorization
             IJwtSecurityTokenHandlerWrapper jwtSecurityTokenHandlerWrapper,
             IOidcConfigurationManager oidcConfigurationManager)
         {
-            _issuerUrl = apiAuthorizationSettingsOptions.Value.IssuerUrl;
-            _audience = apiAuthorizationSettingsOptions.Value.Audience;
+            _issuerUrl = apiAuthorizationSettingsOptions?.Value?.IssuerUrl;
+            _audience = apiAuthorizationSettingsOptions?.Value?.Audience;
 
             _authorizationHeaderBearerTokenExractor = authorizationHeaderBearerTokenExractor;
 
@@ -129,6 +130,32 @@ namespace OidcApiAuthorization
 
             // Success result.
             return new ApiAuthorizationResult();
+        }
+
+        public async Task<HealthCheckResult> HealthCheckAsync()
+        {
+            if (string.IsNullOrWhiteSpace(_audience)
+                || string.IsNullOrWhiteSpace(_issuerUrl))
+            {
+                return new HealthCheckResult(
+                    $"Some or all {nameof(OidcApiAuthorizationSettings)} are missing.");
+            }
+
+            try
+            {
+                // Get the singing keys fresh. Not from the cache.
+                _oidcConfigurationManager.RequestRefresh();
+
+                await _oidcConfigurationManager.GetIssuerSigningKeysAsync();
+            }
+            catch (Exception ex)
+            {
+                return new HealthCheckResult(
+                    "Problem getting signing keys from Open ID Connect provider (issuer)."
+                    + $" ConfigurationManager threw {ex.GetType()} Message: {ex.Message}");
+            }
+
+            return new HealthCheckResult(); // Good health.
         }
     }
 }

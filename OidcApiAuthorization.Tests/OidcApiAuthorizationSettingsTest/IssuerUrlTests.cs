@@ -8,15 +8,15 @@ namespace OidcApiAuthorizationSettingsTest
         [Fact]
         public void Appends_missing_foward_slash()
         {
-            const string withoutEndingSlash = "https://my.test.url";
-            const string withEndingSlash = "https://my.test.url/";
+            const string WithoutEndingSlash = "https://my.test.url";
+            const string WithEndingSlash = "https://my.test.url/";
 
             var settings = new OidcApiAuthorizationSettings()
             {
-                IssuerUrl = withoutEndingSlash
+                IssuerUrl = WithoutEndingSlash
             };
 
-            Assert.Equal(withEndingSlash, settings.IssuerUrl);
+            Assert.Equal(WithEndingSlash, settings.IssuerUrl);
         }
 
         [Fact]

@@ -1,4 +1,4 @@
-﻿namespace OidcApiAuthorization.Abstractions
+﻿namespace OidcApiAuthorization.Models
 {
     /// <summary>
     /// Encapsulates the results of an API authorization.

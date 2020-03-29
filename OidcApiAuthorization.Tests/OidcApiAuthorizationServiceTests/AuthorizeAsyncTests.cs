@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using OidcApiAuthorization;
-using OidcApiAuthorization.Abstractions;
+using OidcApiAuthorization.Models;
 using OidcApiAuthorization.TestFixtures;
-using TestFixtures.AzureFunctions;
 using Xunit;
 
 namespace OidcApiAuthorizationServiceTests
