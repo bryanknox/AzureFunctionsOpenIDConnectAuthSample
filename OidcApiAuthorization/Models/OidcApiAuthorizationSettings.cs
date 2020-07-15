@@ -11,7 +11,7 @@
         /// Identifies the API to be authorized by the Open ID Connect provider (issuer).
         /// </summary>
         /// <remarks>
-        /// The "Audiance" is the indentifer used by the authorization provider to indentify
+        /// The "Audience" is the indentifer used by the authorization provider to indentify
         /// the API (HTTP triggered Azure Function) being protected. This is often a URL but
         /// it is not used as a URL is is simply used as an identifier.
         /// 

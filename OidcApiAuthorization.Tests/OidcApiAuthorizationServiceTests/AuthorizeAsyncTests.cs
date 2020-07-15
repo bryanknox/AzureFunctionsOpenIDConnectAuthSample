@@ -14,7 +14,7 @@ namespace OidcApiAuthorizationServiceTests
         [Fact]
         public async Task Retrys_once_if_SecurityTokenSignatureKeyNotFoundException()
         {
-            const string AudianceForTest = "AudianceForTest";
+            const string AudienceForTest = "AudienceForTest";
             const string IssuerUrlForTest = "https://issuerUrl.for.test/";
             const string ExtractedTokenForTest = "ExtractedTokenForTest";
 
@@ -23,7 +23,7 @@ namespace OidcApiAuthorizationServiceTests
                 {
                     Value = new OidcApiAuthorizationSettings()
                     {
-                        Audience = AudianceForTest,
+                        Audience = AudienceForTest,
                         IssuerUrl = IssuerUrlForTest
                     }
                 };
@@ -64,7 +64,7 @@ namespace OidcApiAuthorizationServiceTests
         [Fact]
         public async Task Returns_failure_for_unauthorized_token()
         {
-            const string AudianceForTest = "AudianceForTest";
+            const string AudienceForTest = "AudienceForTest";
             const string IssuerUrlForTest = "https://issuerUrl.for.test/";
             const string ExtractedTokenForTest = "ExtractedTokenForTest";
 
@@ -73,7 +73,7 @@ namespace OidcApiAuthorizationServiceTests
                 {
                     Value = new OidcApiAuthorizationSettings()
                     {
-                        Audience = AudianceForTest,
+                        Audience = AudienceForTest,
                         IssuerUrl = IssuerUrlForTest
                     }
                 };
@@ -115,7 +115,7 @@ namespace OidcApiAuthorizationServiceTests
         [Fact]
         public async Task Returns_failure_if_bad_Aurthorization_header()
         {
-            const string AudianceForTest = "audianceForTest";
+            const string AudienceForTest = "AudienceForTest";
             const string IssuerUrlForTest = "https://issuerUrl.for.test/";
 
             var fakeApiAuthorizationSettingsOptions
@@ -123,7 +123,7 @@ namespace OidcApiAuthorizationServiceTests
                 {
                     Value = new OidcApiAuthorizationSettings()
                     {
-                        Audience = AudianceForTest,
+                        Audience = AudienceForTest,
                         IssuerUrl = IssuerUrlForTest
                     }
                 };
@@ -152,7 +152,7 @@ namespace OidcApiAuthorizationServiceTests
         [Fact]
         public async Task Returns_failure_if_cant_get_signing_keys_from_issuer()
         {
-            const string AudianceForTest = "AudianceForTest";
+            const string AudienceForTest = "AudienceForTest";
             const string IssuerUrlForTest = "https://issuerUrl.for.test/";
             const string ExtractedTokenForTest = "ExtractedTokenForTest";
             const string ExceptionMessageForTest = "ExceptionMessageForTest";
@@ -162,7 +162,7 @@ namespace OidcApiAuthorizationServiceTests
                 {
                     Value = new OidcApiAuthorizationSettings()
                     {
-                        Audience = AudianceForTest,
+                        Audience = AudienceForTest,
                         IssuerUrl = IssuerUrlForTest
                     }
                 };
@@ -198,7 +198,7 @@ namespace OidcApiAuthorizationServiceTests
         [Fact]
         public async Task Returns_success_for_happy_path()
         {
-            const string AudianceForTest = "AudianceForTest";
+            const string AudienceForTest = "AudienceForTest";
             const string IssuerUrlForTest = "https://issuerUrl.for.test/";
             const string ExtractedTokenForTest = "ExtractedTokenForTest";
 
@@ -207,7 +207,7 @@ namespace OidcApiAuthorizationServiceTests
                 {
                     Value = new OidcApiAuthorizationSettings()
                     {
-                        Audience = AudianceForTest,
+                        Audience = AudienceForTest,
                         IssuerUrl = IssuerUrlForTest
                     }
                 };
