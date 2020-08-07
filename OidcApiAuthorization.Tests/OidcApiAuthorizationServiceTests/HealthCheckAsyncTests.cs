@@ -52,14 +52,14 @@ namespace OidcApiAuthorizationServiceTests
         [InlineData(" ", " ")] // Spaces.
         [InlineData("someAudience", null)]
         [InlineData(null, "https://issuerUrl.for.test/")]
-        public async void Returns_error_if_missing_settings_values(string audiance, string issuerUrl)
+        public async void Returns_error_if_missing_settings_values(string Audience, string issuerUrl)
         {
             var fakeApiAuthorizationSettingsOptions
                 = new FakeOptions<OidcApiAuthorizationSettings>()
                 {
                     Value = new OidcApiAuthorizationSettings()
                     {
-                        Audience = audiance,
+                        Audience = Audience,
                         IssuerUrl = issuerUrl
                     }
                 };
@@ -84,7 +84,7 @@ namespace OidcApiAuthorizationServiceTests
                 {
                     Value = new OidcApiAuthorizationSettings()
                     {
-                        Audience = "audianceForTest",
+                        Audience = "AudienceForTest",
                         IssuerUrl = "https://issuerUrl.for.test/"
                     }
                 };
@@ -116,7 +116,7 @@ namespace OidcApiAuthorizationServiceTests
                 {
                     Value = new OidcApiAuthorizationSettings()
                     {
-                        Audience = "audianceForTest",
+                        Audience = "AudienceForTest",
                         IssuerUrl = "https://issuerUrl.for.test/"
                     }
                 };
