@@ -33,7 +33,7 @@ namespace SampleFunctionApp
                 log.LogWarning(authorizationResult.FailureReason);
                 return new UnauthorizedResult();
             }
-            log.LogWarning($"HTTP trigger function {nameof(HelloFunction)} rquest is authorized.");
+            log.LogWarning($"HTTP trigger function {nameof(HelloFunction)} request is authorized.");
 
             // Get name from request body.
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
