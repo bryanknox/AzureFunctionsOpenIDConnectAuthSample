@@ -75,7 +75,7 @@ namespace SampleFunctionApp.Tests
 
             Assert.True(listLogger.HasLogEntryMessageContaining(
                 LogLevel.Warning,
-                $"HTTP trigger function {nameof(HelloFunction)} rquest is authorized."));
+                $"HTTP trigger function {nameof(HelloFunction)} request is authorized."));
         }
 
         [Theory]
