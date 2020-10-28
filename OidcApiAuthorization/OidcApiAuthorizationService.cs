@@ -98,26 +98,30 @@ namespace OidcApiAuthorization
                         IssuerSigningKeys = isserSigningKeys
                     };
 
-                    // Throws if the the token cannot be validated.
-                    _jwtSecurityTokenHandlerWrapper.ValidateToken(
-                        authorizationBearerToken,
-                        tokenValidationParameters);
+                    try
+                    {
+                        // Throws if the the token cannot be validated.
+                        _jwtSecurityTokenHandlerWrapper.ValidateToken(
+                            authorizationBearerToken,
+                            tokenValidationParameters);
 
-                    isTokenValid = true;
-                }
-                catch (SecurityTokenSignatureKeyNotFoundException)
-                {
-                    // A SecurityTokenSignatureKeyNotFoundException is thrown if the signing keys for
-                    // validating the JWT could not be found. This could happen if the issuer has
-                    // changed the signing keys since the last time they were retrieved by the
-                    // ConfigurationManager. To handle this we ask the ConfigurationManger to refresh
-                    // which causes it to retrieve the keys again the next time we ask for them.
-                    // Then we retry by asking for the signing keys and validating the token again.
-                    // We only retry once.
+                        isTokenValid = true;
+                    }
+                    catch (SecurityTokenSignatureKeyNotFoundException)
+                    {
+                        // A SecurityTokenSignatureKeyNotFoundException is thrown if the signing keys for
+                        // validating the JWT could not be found. This could happen if the issuer has
+                        // changed the signing keys since the last time they were retrieved by the
+                        // ConfigurationManager. To handle this we ask the ConfigurationManger to refresh
+                        // which causes it to retrieve the keys again the next time we ask for them.
+                        // Then we retry by asking for the signing keys and validating the token again.
+                        // We only retry once.
 
-                    _oidcConfigurationManager.RequestRefresh();
+                        if (validationRetryCount > 0)  throw;
 
-                    validationRetryCount++;
+                        _oidcConfigurationManager.RequestRefresh();
+                        validationRetryCount++;
+                    }
                 }
                 catch (Exception ex)
                 {

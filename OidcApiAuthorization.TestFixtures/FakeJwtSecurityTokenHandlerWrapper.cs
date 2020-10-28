@@ -13,6 +13,12 @@ namespace OidcApiAuthorization.TestFixtures
         /// </summary>
         public bool ThrowFirstTime { get; set; }
 
+        /// <summary>
+        /// Indicates whether or not a SecurityTokenSignatureKeyNotFoundException
+        /// should be thrown the second time that ValidateToken(..) is called.
+        /// </summary>
+        public bool ThrowSecondTime { get; set; }
+
         public Exception ExceptionToThrow { get; set; }
 
         public int ValidateTokenCalledCount { get; private set; }
@@ -24,8 +30,7 @@ namespace OidcApiAuthorization.TestFixtures
             TokenValidationParameters tokenValidationParameters)
         {
             ++ValidateTokenCalledCount;
-            if (ValidateTokenCalledCount == 1
-                && ThrowFirstTime)
+            if ((ValidateTokenCalledCount == 1 && ThrowFirstTime) || (ValidateTokenCalledCount == 2 && ThrowSecondTime))
             {
                 throw new SecurityTokenSignatureKeyNotFoundException();
             }
