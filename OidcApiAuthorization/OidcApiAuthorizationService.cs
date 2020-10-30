@@ -112,15 +112,25 @@ namespace OidcApiAuthorization
                         // A SecurityTokenSignatureKeyNotFoundException is thrown if the signing keys for
                         // validating the JWT could not be found. This could happen if the issuer has
                         // changed the signing keys since the last time they were retrieved by the
-                        // ConfigurationManager. To handle this we ask the ConfigurationManger to refresh
-                        // which causes it to retrieve the keys again the next time we ask for them.
-                        // Then we retry by asking for the signing keys and validating the token again.
-                        // We only retry once.
+                        // ConfigurationManager.
 
-                        if (validationRetryCount > 0)  throw;
-
-                        _oidcConfigurationManager.RequestRefresh();
-                        validationRetryCount++;
+                        if (validationRetryCount == 0)
+                        {
+                            // To handle the SecurityTokenSignatureKeyNotFoundException we ask the
+                            // ConfigurationManger to refresh which will cause it to retrieve the keys again
+                            // the next time we ask for them.
+                            // Then we retry by asking for the signing keys and validating the token again.
+                            // We only retry once.
+                            _oidcConfigurationManager.RequestRefresh();
+                            validationRetryCount++;
+                        }
+                        else
+                        {
+                            // We've already re-tried after the first SecurityTokenSignatureKeyNotFoundException,
+                            // and we caught the exception again.
+                            // This time we rethrow the exception so that we will fail the authorization.
+                            throw;
+                        }
                     }
                 }
                 catch (Exception ex)
