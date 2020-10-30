@@ -60,6 +60,56 @@ namespace OidcApiAuthorizationServiceTests
 
             Assert.Equal(1, fakeOidcConfigurationManager.RequestRefreshCalledCount);
         }
+        
+        [Fact]
+        public async Task Returns_failure_if_SecurityTokenSignatureKeyNotFoundException_on_retry()
+        {
+            const string AudienceForTest = "AudienceForTest";
+            const string IssuerUrlForTest = "https://issuerUrl.for.test/";
+            const string ExtractedTokenForTest = "ExtractedTokenForTest";
+
+            var fakeApiAuthorizationSettingsOptions
+                = new FakeOptions<OidcApiAuthorizationSettings>()
+                {
+                    Value = new OidcApiAuthorizationSettings()
+                    {
+                        Audience = AudienceForTest,
+                        IssuerUrl = IssuerUrlForTest
+                    }
+                };
+
+            var fakeAuthorizationHeaderBearerTokenExractor = new FakeAuthorizationHeaderBearerTokenExractor()
+            {
+                TokenToReturn = ExtractedTokenForTest
+            };
+
+            var fakeJwtSecurityTokenHandlerWrapper = new FakeJwtSecurityTokenHandlerWrapper()
+            {
+                ThrowFirstTime = true, ThrowSecondTime = true
+            };
+
+            var fakeOidcConfigurationManager = new FakeOidcConfigurationManager()
+            {
+                SecurityKeysForTest = new List<SecurityKey>()
+            };
+
+            IHeaderDictionary httpRequestHeaders = null;
+
+            var service = new OidcApiAuthorizationService(
+                fakeApiAuthorizationSettingsOptions,
+                fakeAuthorizationHeaderBearerTokenExractor,
+                fakeJwtSecurityTokenHandlerWrapper,
+                fakeOidcConfigurationManager);
+
+            ApiAuthorizationResult result = await service.AuthorizeAsync(
+                httpRequestHeaders);
+
+            Assert.False(result.Success);
+
+            Assert.Equal(2, fakeJwtSecurityTokenHandlerWrapper.ValidateTokenCalledCount);
+
+            Assert.Equal(1, fakeOidcConfigurationManager.RequestRefreshCalledCount);
+        }
 
         [Fact]
         public async Task Returns_failure_for_unauthorized_token()
