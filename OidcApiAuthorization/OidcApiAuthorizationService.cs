@@ -140,7 +140,7 @@ namespace OidcApiAuthorization
                         + $"Message: {ex.Message}");
                 }
 
-            } while (!isTokenValid && validationRetryCount <= 1);
+            } while (!isTokenValid);
 
             // Success result.
             return new ApiAuthorizationResult();
