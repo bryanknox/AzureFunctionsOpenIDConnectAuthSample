@@ -2,8 +2,20 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AzureFunctionsVersion>v3</AzureFunctionsVersion>
-	<_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
   </PropertyGroup>
+  <ItemGroup>
+    <!-- 
+      Use FunctionsPreservedDependencies to perserve assemblies are more rescent versions
+      than are used in OidcApiAuthorization than in the Azure Functions run-time.
+      See https://docs.microsoft.com/en-us/azure/azure-functions/functions-develop-vs#configure-your-build-output-settings
+    -->
+    <FunctionsPreservedDependencies Include="Microsoft.IdentityModel.JsonWebTokens.dll" />
+    <FunctionsPreservedDependencies Include="Microsoft.IdentityModel.Logging.dll" />
+    <FunctionsPreservedDependencies Include="Microsoft.IdentityModel.Protocols.dll" />
+    <FunctionsPreservedDependencies Include="Microsoft.IdentityModel.Protocols.OpenIdConnect.dll" />
+    <FunctionsPreservedDependencies Include="Microsoft.IdentityModel.Tokens.dll" />
+    <FunctionsPreservedDependencies Include="System.IdentityModel.Tokens.Jwt.dll" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.13" />
