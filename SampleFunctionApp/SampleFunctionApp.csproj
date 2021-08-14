@@ -2,7 +2,24 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AzureFunctionsVersion>v3</AzureFunctionsVersion>
-	<_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
+    <!--
+    The `<_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>` is needed to preserve
+    all assemblies used by the function app even if they have the same name as assemblies used 
+    in the Azure Functions run-time. `_FunctionsSkipCleanOutput` is undocumented, but is sometimes
+    recommended. For example see:
+    https://github.com/Azure/azure-functions-vs-build-sdk/issues/397
+    
+    An alternative to using `_FunctionsSkipCleanOutput` is to use `FunctionsPreservedDependencies`,
+    which is (minimally) documented. It requires you to list the names of the specific assemblies
+    that you do not want to be removed if the name matches an assembly used in the Azure Functions
+    run-time. Hunting down the assembly names to list in `FunctionsPreservedDependencies` elements
+    is time consuming, and will have to be updated as the assemblies used by the functions run-time
+    or function app change.
+
+    There is a list of assemblies that the functions run-time uses. That list is maintained at:
+    https://github.com/Azure/azure-functions-host/blob/dev/tools/ExtensionsMetadataGenerator/test/ExtensionsMetadataGeneratorTests/ExistingRuntimeAssemblies.txt
+    -->
+	  <_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
