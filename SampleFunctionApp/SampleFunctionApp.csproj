@@ -5,7 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- 
-      Use FunctionsPreservedDependencies to perserve assemblies that are used in OidcApiAuthorization
+      Use FunctionsPreservedDependencies to preserve assemblies that are used in OidcApiAuthorization
       and are more rescent versions than are used in the Azure Functions run-time.
       See https://docs.microsoft.com/en-us/azure/azure-functions/functions-develop-vs#configure-your-build-output-settings
       This is an alternative to using `<_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>`
