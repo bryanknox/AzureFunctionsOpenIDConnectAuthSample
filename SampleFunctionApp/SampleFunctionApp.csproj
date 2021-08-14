@@ -5,9 +5,12 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- 
-      Use FunctionsPreservedDependencies to perserve assemblies are more rescent versions
-      than are used in OidcApiAuthorization than in the Azure Functions run-time.
+      Use FunctionsPreservedDependencies to perserve assemblies that are used in OidcApiAuthorization
+      and are more rescent versions than are used in the Azure Functions run-time.
       See https://docs.microsoft.com/en-us/azure/azure-functions/functions-develop-vs#configure-your-build-output-settings
+      This is an alternative to using `<_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>`
+      which is undocumented, but sometimes recommended. For example see:
+      https://github.com/Azure/azure-functions-vs-build-sdk/issues/397
     -->
     <FunctionsPreservedDependencies Include="Microsoft.IdentityModel.JsonWebTokens.dll" />
     <FunctionsPreservedDependencies Include="Microsoft.IdentityModel.Logging.dll" />
