@@ -51,21 +51,22 @@ namespace OidcApiAuthorization
         public async Task<ApiAuthorizationResult> AuthorizeAsync(
             IHeaderDictionary httpRequestHeaders)
         {
+            ApiAuthorizationResult apiAuthorizationResult = null;
+
             string authorizationBearerToken = _authorizationHeaderBearerTokenExractor.GetToken(
                 httpRequestHeaders);
+
             if (authorizationBearerToken == null)
             {
-                return new ApiAuthorizationResult(
+                apiAuthorizationResult = new ApiAuthorizationResult(
                     "Authorization header is missing, invalid format, or is not a Bearer token.");
             }
 
-            bool isTokenValid = false;
-
             int validationRetryCount = 0;
 
-            do
+            while (apiAuthorizationResult == null)
             {
-                IEnumerable<SecurityKey> isserSigningKeys;
+                IEnumerable<SecurityKey> isserSigningKeys = null;
                 try
                 {
                     // Get the cached signing keys if they were retrieved previously. 
@@ -77,12 +78,12 @@ namespace OidcApiAuthorization
                 }
                 catch (Exception ex)
                 {
-                    return new ApiAuthorizationResult(
+                    apiAuthorizationResult = new ApiAuthorizationResult(
                         "Problem getting signing keys from Open ID Connect provider (issuer)."
                         + $" ConfigurationManager threw {ex.GetType()} Message: {ex.Message}");
                 }
 
-                try
+                if (apiAuthorizationResult == null)
                 {
                     // Try to validate the token.
 
@@ -105,9 +106,10 @@ namespace OidcApiAuthorization
                             authorizationBearerToken,
                             tokenValidationParameters);
 
-                        isTokenValid = true;
+                        // Successfully authorized.
+                        apiAuthorizationResult = new ApiAuthorizationResult();
                     }
-                    catch (SecurityTokenSignatureKeyNotFoundException)
+                    catch (SecurityTokenSignatureKeyNotFoundException ex)
                     {
                         // A SecurityTokenSignatureKeyNotFoundException is thrown if the signing keys for
                         // validating the JWT could not be found. This could happen if the issuer has
@@ -122,28 +124,34 @@ namespace OidcApiAuthorization
                             // Then we retry by asking for the signing keys and validating the token again.
                             // We only retry once.
                             _oidcConfigurationManager.RequestRefresh();
+
                             validationRetryCount++;
+                            
+                            // Retry.
                         }
                         else
                         {
+                            // Authorization failed, after retry.
                             // We've already re-tried after the first SecurityTokenSignatureKeyNotFoundException,
                             // and we caught the exception again.
-                            // This time we rethrow the exception so that we will fail the authorization.
-                            throw;
+                            apiAuthorizationResult = new ApiAuthorizationResult(
+                                $"Authorization Failed. {ex.GetType()} caught while validating JWT token, after retry."
+                                + $"Message: {ex.Message}");
                         }
                     }
-                }
-                catch (Exception ex)
-                {
-                    return new ApiAuthorizationResult(
-                        $"Authorization Failed. {ex.GetType()} caught while validating JWT token."
-                        + $"Message: {ex.Message}");
-                }
+                    catch (Exception ex)
+                    {
+                        // The authorization fails if any Exception is thrown,
+                        // not just SecurityTokenException.
 
-            } while (!isTokenValid);
+                        apiAuthorizationResult = new ApiAuthorizationResult(
+                            $"Authorization Failed. {ex.GetType()} caught while validating JWT token."
+                            + $"Message: {ex.Message}");
+                    }
+                }
+            }
 
-            // Success result.
-            return new ApiAuthorizationResult();
+            return apiAuthorizationResult;
         }
 
         public async Task<HealthCheckResult> HealthCheckAsync()
