@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
@@ -111,12 +112,18 @@ namespace OidcApiAuthorizationServiceTests
             Assert.Equal(1, fakeOidcConfigurationManager.RequestRefreshCalledCount);
         }
 
-        [Fact]
-        public async Task Returns_failure_for_unauthorized_token()
+        [InlineData("SecurityTokenException")] // Normally throws SecurityTokenException when token is not authorized.
+        [InlineData("Exception")] // Test when throws any other exception type too.
+        [Theory]
+        public async Task Returns_failure_for_unauthorized_token(string exceptionTypeToThrow)
         {
             const string AudienceForTest = "AudienceForTest";
             const string IssuerUrlForTest = "https://issuerUrl.for.test/";
             const string ExtractedTokenForTest = "ExtractedTokenForTest";
+
+            Exception exceptionToThrow = exceptionTypeToThrow == "SecurityTokenException"
+                    ? new SecurityTokenException()
+                    : new Exception();
 
             var fakeApiAuthorizationSettingsOptions
                 = new FakeOptions<OidcApiAuthorizationSettings>()
@@ -135,8 +142,8 @@ namespace OidcApiAuthorizationServiceTests
 
             var fakeJwtSecurityTokenHandlerWrapper = new FakeJwtSecurityTokenHandlerWrapper()
             {
-                // Normally a SecurityTokenException will be thrown when the token is not authorized.
-                ExceptionToThrow = new SecurityTokenException()
+                // Throw for unauthrorized token. 
+                ExceptionToThrow = exceptionToThrow
             };
 
             var fakeOidcConfigurationManager = new FakeOidcConfigurationManager()
