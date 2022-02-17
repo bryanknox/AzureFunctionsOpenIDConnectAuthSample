@@ -17,7 +17,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.102
+        dotnet-version: '6.0.x'
 
     # Build the solution.
     - name: Build solution with dotnet
