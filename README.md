@@ -11,6 +11,9 @@ Service providers that support compatible authorization servers include [Auth0](
 - [Options Pattern for App Settings](https://docs.microsoft.com/en-us/azure/azure-functions/functions-dotnet-dependency-injection#working-with-options-and-settings)
 - OpenIDConnect (OIDC), Bearer tokens (OAuth 2.0 JSON Web Tokens (JWT))
 
+(For .NET 3.1 and Azure Functions v3, see the `dotnet-3.1-az-funcs-v3` branch.)
+
+
 # The Sample Solution Includes:
 - Unit tests using [xUnit.net](https://xunit.net/)
 - CI using GitHub Actions
