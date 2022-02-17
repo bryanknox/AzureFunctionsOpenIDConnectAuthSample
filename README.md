@@ -5,8 +5,8 @@ Service providers that support compatible authorization servers include [Auth0](
 
 # This Sample Uses:
 - C#
-- .NET Core v3.1
-- Azure Functions v3
+- .NET 6
+- Azure Functions v4
 - [Dependency Injection](https://docs.microsoft.com/en-us/azure/azure-functions/functions-dotnet-dependency-injection)
 - [Options Pattern for App Settings](https://docs.microsoft.com/en-us/azure/azure-functions/functions-dotnet-dependency-injection#working-with-options-and-settings)
 - OpenIDConnect (OIDC), Bearer tokens (OAuth 2.0 JSON Web Tokens (JWT))
