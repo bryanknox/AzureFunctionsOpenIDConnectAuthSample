@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.1.18" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\OidcApiAuthorization\OidcApiAuthorization.csproj" />
     <ProjectReference Include="..\TestFixtures.AzureFunctions\TestFixtures.AzureFunctions.csproj" />
   </ItemGroup>
