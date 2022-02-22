@@ -30,16 +30,16 @@ Here's the breakdown of what follows:
 1. The implementation of the sample code that protects the API.
 
 # Context - OIDC and OAuth 2.0 Flows Used
-The techniques used in the sample code can be used for protecting other HTTP triggered Azure Functions. If those the authorization server supports an OpenID Connect (OIDC) `/.well-known/openid-configuration` endpoint that the Azure Function will use to get the information it needs to authorize calls to the API.
+The techniques used in the sample code can be used for protecting other HTTP triggered Azure Functions. If the authorization server supports an OpenID Connect (OIDC) `/.well-known/openid-configuration` endpoint that the Azure Function will use to get the information it needs to authorize calls to the API.
 
 Before the client application makes calls to the protected API it will typically go through a flow similar to the following:
 1. The client application sends its Client ID and Client Secret to the authorization server.
 1. The authorization server returns a JSON Web Token (JWT) containing an Access Token.
 1. The client application includes that JWT in subsequent calls to the protected API as an `Authorization` header, where the value of that header is a Bearer token containing the JWT.
  
-That flow that the client applications used for calling protected APIs in that way is called the OAuth 2.0 Client Credentials Flow. See [OAuth 2.0 RFC 6749, section 4.4 Client Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.4).
+The flow that the client applications used for calling protected APIs in that way is called the OAuth 2.0 Client Credentials Flow. See [OAuth 2.0 RFC 6749, section 4.4 Client Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.4).
 
-Its important to note that in the Client Credentials Flow access to the API is granted to the client application, not a user of the client application user.
+Its important to note that in the Client Credentials Flow access to the API is granted to the client application, not a user of the client application.
 
 I won't be going into more details of how the OAuth 2.0 Client Credentials Flow works or how it can be implemented within a client app. Instead I'll focus on describing the API-side of how the call to the Azure Function is protected.
 
