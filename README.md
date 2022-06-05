@@ -18,6 +18,11 @@ Service providers that support compatible authorization servers include [Auth0](
 - Unit tests using [xUnit.net](https://xunit.net/)
 - CI using GitHub Actions
 
+# Looking for a NuGet package?
+Check out the following projects for NuGet packages that provide ODIC features for Azure Functions. These projects are orignally based on code that was forked from this repo:
+- [AspNetMonsters/AzureFunctions.OidcAuthentication](https://github.com/AspNetMonsters/AzureFunctions.OidcAuthentication) repo and [NuGet](https://www.nuget.org/packages/AzureFunctions.OidcAuthentication/)
+- [fmichellonet/AzureFunctions.Extensions.OpenIDConnect](https://github.com/fmichellonet/AzureFunctions.Extensions.OpenIDConnect) repo and [NuGet](https://www.nuget.org/packages/AzureFunctions.Extensions.OpenIDConnect/)
+
 # Introduction
 I implemented a sample serverless API as an HTTP triggered Azure Function that is protected to ensure that only authorized apps can access that API. The sample Azure Function works when used with an authorization server that supports OpenID Connect (OIDC) and OAuth 2.0 protocols.
 
