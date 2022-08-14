@@ -21,7 +21,7 @@ namespace SampleFunctionApp
 
         [FunctionName("HealthCheckFunction")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
             ILogger log)
         {
             log.LogWarning($"HTTP trigger function {nameof(HealthCheckFunction)} received a request.");
