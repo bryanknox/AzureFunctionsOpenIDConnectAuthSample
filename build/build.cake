@@ -1,5 +1,5 @@
 #tool nuget:?package=NuGet.CommandLine&version=6.2.1
-#tool nuget:?package=GitVersion.Tool&version=5.10.3
+#tool nuget:?package=GitVersion.CommandLine&version=5.10.3
 
 var target = Argument("target", "Build-Test-Package");
 var gitHubToken = Argument("gitHubToken", EnvironmentVariable("GITHUB_TOKEN") ?? null);

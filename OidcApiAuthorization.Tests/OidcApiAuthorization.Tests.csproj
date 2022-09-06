@@ -2,10 +2,10 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <IsPackable>false</IsPackable>
-    <AssemblyVersion>0.1.32.0</AssemblyVersion>
-    <FileVersion>0.1.32.0</FileVersion>
-    <InformationalVersion>0.1.32+Branch.main.Sha.f4d1648ae137caa2a297b9d302c04a83f7c2dd70</InformationalVersion>
-    <Version>0.1.32</Version>
+    <AssemblyVersion>0.1.1.0</AssemblyVersion>
+    <FileVersion>0.1.1.0</FileVersion>
+    <InformationalVersion>0.1.1-versioning.1+Branch.features-versioning.Sha.f0e1161cf12eb5db56b203c4d693c9fbb91dc87b</InformationalVersion>
+    <Version>0.1.1-versioning0001</Version>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
