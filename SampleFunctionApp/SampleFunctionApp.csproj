@@ -19,7 +19,11 @@
     There is a list of assemblies that the functions run-time uses. That list is maintained at:
     https://github.com/Azure/azure-functions-host/blob/dev/tools/ExtensionsMetadataGenerator/test/ExtensionsMetadataGeneratorTests/ExistingRuntimeAssemblies.txt
     -->
-	  <_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
+    <_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
+    <AssemblyVersion>0.1.32.0</AssemblyVersion>
+    <FileVersion>0.1.32.0</FileVersion>
+    <InformationalVersion>0.1.32+Branch.main.Sha.f4d1648ae137caa2a297b9d302c04a83f7c2dd70</InformationalVersion>
+    <Version>0.1.32</Version>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />

@@ -1,0 +1,55 @@
+name: CI/CD
+on: push
+jobs:
+
+  build:
+    runs-on: windows-latest
+    steps:
+    - name: Get source
+      uses: actions/checkout@v1
+    - name: Run the Cake script
+      uses: cake-build/cake-action@v1
+      with:
+        script-path: build/build.cake
+        target: Build-Test-Package
+        verbosity: Verbose
+    - name: Upload resulting artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: artifacts
+        path: artifacts
+
+  release:
+    if: github.ref == 'refs/heads/main'
+    runs-on: windows-latest
+    needs:  [build]
+    steps:
+    - name: Get source
+      uses: actions/checkout@v1
+    - name: Get dependencies
+      uses: actions/download-artifact@v1
+      with:
+        name: artifacts
+        path: artifacts
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0.9.7
+      with:
+          versionSpec: '5.x'
+    - name: Run GitVersion
+      id: gitversion
+      uses: gittools/actions/gitversion/execute@v0.9.7
+    - name: Run the Cake script
+      uses: cake-build/cake-action@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        script-path: build/build.cake
+        target: Push
+        verbosity: Verbose
+    - name: Create Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ steps.gitversion.outputs.majorMinorPatch }}
+        release_name: Release v${{ steps.gitversion.outputs.majorMinorPatch }}

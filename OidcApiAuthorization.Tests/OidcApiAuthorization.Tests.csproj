@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-
     <IsPackable>false</IsPackable>
+    <AssemblyVersion>0.1.32.0</AssemblyVersion>
+    <FileVersion>0.1.32.0</FileVersion>
+    <InformationalVersion>0.1.32+Branch.main.Sha.f4d1648ae137caa2a297b9d302c04a83f7c2dd70</InformationalVersion>
+    <Version>0.1.32</Version>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
@@ -19,11 +20,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\OidcApiAuthorization.TestFixtures\OidcApiAuthorization.TestFixtures.csproj" />
     <ProjectReference Include="..\OidcApiAuthorization\OidcApiAuthorization.csproj" />
     <ProjectReference Include="..\TestFixtures.AzureFunctions\TestFixtures.AzureFunctions.csproj" />
   </ItemGroup>
-
 </Project>
