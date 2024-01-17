@@ -19,8 +19,7 @@ Service providers that support compatible authorization servers include [Auth0](
 - CI using GitHub Actions
 
 # Looking for a NuGet package?
-Check out the following projects for NuGet packages that provide ODIC features for Azure Functions. These projects are orignally based on code that was forked from this repo:
-- [AspNetMonsters/AzureFunctions.OidcAuthentication](https://github.com/AspNetMonsters/AzureFunctions.OidcAuthentication) repo and [NuGet](https://www.nuget.org/packages/AzureFunctions.OidcAuthentication/)
+Check out the following project for a NuGet package that provides ODIC features for Azure Functions. That project is based on code that was forked from this repo:
 - [fmichellonet/AzureFunctions.Extensions.OpenIDConnect](https://github.com/fmichellonet/AzureFunctions.Extensions.OpenIDConnect) repo and [NuGet](https://www.nuget.org/packages/AzureFunctions.Extensions.OpenIDConnect/)
 
 # Introduction
